@@ -8,14 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class ReceiveActivity extends AppCompatActivity {
+public class SpendActivity extends AppCompatActivity {
 
     final String TAG = "FinanceTracker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receive);
+        setContentView(R.layout.activity_spend);
 
         Button testButton = findViewById(R.id.testButton);
 
@@ -25,11 +25,11 @@ public class ReceiveActivity extends AppCompatActivity {
                 Intent getBal = getIntent();
                 double balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
                 Log.v(TAG, "Received data : " + balanceAmount);
-                balanceAmount += 20;
-                Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
-                addBal.putExtra("balanceAmount", balanceAmount);
+                balanceAmount -= 20;
+                Intent deductBal = new Intent(SpendActivity.this, MainActivity.class);
+                deductBal.putExtra("balanceAmount", balanceAmount);
                 Log.v(TAG, "Sending data : " + balanceAmount);
-                startActivity(addBal);
+                startActivity(deductBal);
                 finish();
             }
         });
