@@ -1,13 +1,17 @@
 package sg.edu.np.financetracker2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +47,30 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //Bottom Navigation View
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.settings:
+                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.home:
+                        Intent intent2 = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.report:
+                        Intent intent3 = new Intent(MainActivity.this, ReportActivity.class);
+                        startActivity(intent3);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
     }
 
     protected void onStart(){
