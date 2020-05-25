@@ -14,15 +14,24 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
     double balanceAmount;
     final String TAG = "FinanceTracker";
+    sharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //NightMode
+        sharedPref = new sharedPref(this);
+        if(sharedPref.loadNightMode()==true){
+            setTheme(R.style.darkTheme);
+        }
+        else {
+            setTheme(R.style.AppTheme);
+        };
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /////////
         final Button buttonSpend = (Button) findViewById(R.id.buttonSpend);
         final Button buttonReceive = (Button) findViewById(R.id.buttonReceive);
 
@@ -56,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.settings:
                         Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                         startActivity(intent);
-                        break;
-                    case R.id.home:
-                        Intent intent2 = new Intent(MainActivity.this, HomeActivity.class);
-                        startActivity(intent2);
                         break;
                     case R.id.report:
                         Intent intent3 = new Intent(MainActivity.this, ReportActivity.class);

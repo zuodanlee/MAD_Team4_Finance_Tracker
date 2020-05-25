@@ -29,7 +29,7 @@ public class ReportActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.home:
-                        Intent intent2 = new Intent(ReportActivity.this, HomeActivity.class);
+                        Intent intent2 = new Intent(ReportActivity.this, MainActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.settings:
