@@ -15,11 +15,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    sharedPref sharedPref;
     double balanceAmount;
     final String TAG = "FinanceTracker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPref = new sharedPref(this);
+        if(sharedPref.loadNightMode()){
+            setTheme(R.style.darkTheme);
+        }
+        else {
+            setTheme(R.style.AppTheme);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,13 +67,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                         startActivity(intent);
                         break;
-                    case R.id.home:
-                        Intent intent2 = new Intent(MainActivity.this, HomeActivity.class);
-                        startActivity(intent2);
-                        break;
                     case R.id.report:
-                        Intent intent3 = new Intent(MainActivity.this, ReportActivity.class);
-                        startActivity(intent3);
+                        Intent intent2 = new Intent(MainActivity.this, ReportActivity.class);
+                        startActivity(intent2);
                         break;
                 }
 

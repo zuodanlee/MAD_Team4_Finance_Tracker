@@ -13,12 +13,12 @@ public class ReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         sharedPref = new sharedPref(this);
-        if(sharedPref.loadNightMode()==true){
+        if(sharedPref.loadNightMode()){
             setTheme(R.style.darkTheme);
         }
         else {
             setTheme(R.style.AppTheme);
-        };
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
@@ -29,7 +29,7 @@ public class ReportActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.home:
-                        Intent intent2 = new Intent(ReportActivity.this, HomeActivity.class);
+                        Intent intent2 = new Intent(ReportActivity.this, MainActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.settings:

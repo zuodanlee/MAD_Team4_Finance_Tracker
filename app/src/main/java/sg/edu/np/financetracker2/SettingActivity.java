@@ -23,7 +23,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //NightMode
         sharedPref = new sharedPref(this);
-        if(sharedPref.loadNightMode()==true){
+        if(sharedPref.loadNightMode()){
             setTheme(R.style.darkTheme);
         }
         else setTheme(R.style.AppTheme);
@@ -31,7 +31,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         mySwitch=(Switch)findViewById(R.id.mySwitch);
-        if(sharedPref.loadNightMode()==true){
+        if(sharedPref.loadNightMode()){
             mySwitch.setChecked(true);
         }
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -55,7 +55,7 @@ public class SettingActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.home:
-                        Intent intent2 = new Intent(SettingActivity.this, HomeActivity.class);
+                        Intent intent2 = new Intent(SettingActivity.this, MainActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.report:
