@@ -3,6 +3,7 @@ package sg.edu.np.financetracker2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent spendPage = new Intent(MainActivity.this, SpendActivity.class);
-                spendPage.putExtra("balanceAmount", balanceAmount);
-                Log.v(TAG,"Sending data : " + balanceAmount);
+                //spendPage.putExtra("balanceAmount", balanceAmount);
+                //Log.v(TAG,"Sending data : " + balanceAmount);
                 startActivity(spendPage);
                 finish();
             }
@@ -51,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent receivePage = new Intent(MainActivity.this, ReceiveActivity.class);
-                receivePage.putExtra("balanceAmount", balanceAmount);
-                Log.v(TAG,"Sending data : " + balanceAmount);
+                //receivePage.putExtra("balanceAmount", balanceAmount);
+                //Log.v(TAG,"Sending data : " + balanceAmount);
                 startActivity(receivePage);
                 finish();
             }
@@ -82,10 +89,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         final TextView balance = (TextView) findViewById(R.id.balanceAmount);
-        Intent getBal = getIntent();
-        balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
-        Log.v(TAG, "Received data : " + balanceAmount);
+        //Intent getBal = getIntent();
+        //balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
+        balanceAmount = getBalance();
+
+        Log.v(TAG, "Balance: " + balanceAmount);
         Log.v(TAG, "Displaying balance...");
         balance.setText("$" + balanceAmount);
+    }
+
+    // read balance.txt file and get current balance
+    public Double getBalance(){
+        String data;
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try{
+            InputStream inputStream = getApplicationContext().openFileInput("balance.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            while((data = reader.readLine()) != null){
+                stringBuffer.append(data);
+            }
+            inputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Double.parseDouble(stringBuffer.toString());
     }
 }
