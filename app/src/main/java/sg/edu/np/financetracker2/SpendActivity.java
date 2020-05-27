@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,17 +25,20 @@ public class SpendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spend);
 
-        Button testButton = findViewById(R.id.testButton);
+        Button confirmButton = findViewById(R.id.confirmSpend);
+        final EditText etSpendAmt = findViewById(R.id.deductBalanceAmt);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent getBal = getIntent();
                 //double balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
                 //Log.v(TAG, "Received data : " + balanceAmount);
                 double balanceAmount = getBalance();
+                Double spentAmt = Double.parseDouble(etSpendAmt.getText().toString());
+
                 Log.v(TAG, "Balance: " + balanceAmount);
-                balanceAmount -= 20;
+                balanceAmount -= spentAmt;
                 updateBalance(balanceAmount);
                 Intent deductBal = new Intent(SpendActivity.this, MainActivity.class);
                 //deductBal.putExtra("balanceAmount", balanceAmount);
@@ -46,7 +50,7 @@ public class SpendActivity extends AppCompatActivity {
     }
 
     // read balance.txt file and get current balance
-    public Double getBalance(){
+    private Double getBalance(){
         String data = "";
         StringBuffer stringBuffer = new StringBuffer();
 
@@ -63,7 +67,7 @@ public class SpendActivity extends AppCompatActivity {
         return Double.parseDouble(stringBuffer.toString());
     }
 
-    public void updateBalance(Double newBal){
+    private void updateBalance(Double newBal){
         String newData = newBal.toString();
         writeToFile(newData, getApplicationContext());
     }

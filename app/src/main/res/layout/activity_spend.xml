@@ -6,14 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".SpendActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundcolor"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Add New Expense"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="$"
+                android:textColor="#000000"
+                android:textSize="50sp" />
+
+            <EditText
+                android:id="@+id/deductBalanceAmt"
+                android:layout_width="218dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="0.0"
+                android:textAlignment="center"
+                android:textSize="50sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <Button
-        android:id="@+id/testButton"
+        android:id="@+id/confirmSpend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

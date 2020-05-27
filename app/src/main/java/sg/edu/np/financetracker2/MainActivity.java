@@ -3,7 +3,6 @@ package sg.edu.np.financetracker2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +14,10 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
+import java.lang.Math;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,11 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
         Log.v(TAG, "Balance: " + balanceAmount);
         Log.v(TAG, "Displaying balance...");
-        balance.setText("$" + balanceAmount);
+        Double displayAmount = Math.abs(balanceAmount);
+        if (balanceAmount >= 0){
+            balance.setText("$" + displayAmount);
+        }
+        else{
+            balance.setText("-$" + displayAmount);
+        }
     }
 
     // read balance.txt file and get current balance
-    public Double getBalance(){
+    private Double getBalance(){
         String data;
         StringBuffer stringBuffer = new StringBuffer();
 
