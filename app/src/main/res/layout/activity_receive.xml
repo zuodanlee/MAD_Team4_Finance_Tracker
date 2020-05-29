@@ -12,22 +12,38 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="?attr/backgroundcolor">
-        <TextView
-            android:id="@+id/addBalanceAmt"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="$0.0"
-            android:textSize="50dp"
-            android:textColor="?attr/textcolor"/>
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textColor="?attr/textcolor"
+                android:textSize="50dp" />
+
+            <EditText
+                android:id="@+id/addBalanceAmt"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textAlignment="center"
+                android:textColor="?attr/textcolor"
+                android:textSize="50dp" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_delete"/>
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@raw/notes" />
             <EditText
                 android:id="@+id/notesEditText"
                 android:layout_width="match_parent"
@@ -46,9 +62,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_delete"/>
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@raw/category"/>
                 <EditText
                     android:id="@+id/categoryEditText"
                     android:layout_width="match_parent"
@@ -67,26 +83,22 @@
         </LinearLayout>
 
 
-
-
-
-
-
     </LinearLayout>
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="95dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="28dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.528"
-        app:layout_constraintStart_toEndOf="@+id/imageButton" />
+        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.956" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/backButton"
         android:layout_width="95dp"
         android:layout_height="60dp"
         android:layout_marginStart="168dp"

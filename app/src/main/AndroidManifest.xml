@@ -12,7 +12,8 @@
         <activity android:name=".ReportActivity"></activity>
         <activity android:name=".SettingActivity" />
         <activity android:name=".SpendActivity" />
-        <activity android:name=".ReceiveActivity" />
+        <activity android:name=".ReceiveActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

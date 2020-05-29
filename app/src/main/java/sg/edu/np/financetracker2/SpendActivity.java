@@ -63,6 +63,8 @@ public class SpendActivity extends AppCompatActivity {
             inputStream.close();
         }catch(Exception e){
             e.printStackTrace();
+            Log.v(TAG,"File not found");
+
         }
         return Double.parseDouble(stringBuffer.toString());
     }

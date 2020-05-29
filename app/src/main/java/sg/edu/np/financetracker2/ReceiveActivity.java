@@ -1,13 +1,25 @@
 package sg.edu.np.financetracker2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageSwitcher;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class ReceiveActivity extends AppCompatActivity {
     sharedPref sharedPref;
@@ -26,31 +38,88 @@ public class ReceiveActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
-        /*
-        Button testButton = findViewById(R.id.testButton);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
+
+        Button addBal = (Button)findViewById(R.id.saveButton);
+        final EditText etAddAmt = findViewById(R.id.addBalanceAmt);
+        addBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent getBal = getIntent();
-                double balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
-                Log.v(TAG, "Received data : " + balanceAmount);
-                balanceAmount += 20;
-                Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
-                addBal.putExtra("balanceAmount", balanceAmount);
-                Log.v(TAG, "Sending data : " + balanceAmount);
-                startActivity(addBal);
+                Log.v(TAG, "Adding to balance");
+                double balanceAmount;
+                Double spentAmt;
+                try {
+                    balanceAmount = getBalance();
+                    spentAmt = Double.parseDouble(etAddAmt.getText().toString());
+
+                    //Validation
+                    if (spentAmt== 0 | spentAmt<0){
+                        //Notification to enter a price
+                        Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Log.v(TAG, "Balance: " + balanceAmount);
+                        balanceAmount += spentAmt;
+                        updateBalance(balanceAmount);
+                        Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
+                        startActivity(addBal);
+                        finish();
+                    }
+                }
+                catch (Exception e)
+                {
+                    //Notification to enter a price
+                    Toast.makeText(getApplicationContext(), "Invalid Price, Please Try Again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG,"Back to Main Activity");
+                Intent backToMain = new Intent(ReceiveActivity.this, MainActivity.class);
+                startActivity(backToMain);
                 finish();
             }
         });
 
-         */
-        TextView balAmt = (TextView)findViewById(R.id.addBalanceAmt);
-        balAmt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "Calculator opening");
+    }
+
+    // read balance.txt file and get current balance
+    private Double getBalance(){
+        String data = "";
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try{
+            InputStream inputStream = getApplicationContext().openFileInput("balance.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            while((data = reader.readLine()) != null){
+                stringBuffer.append(data);
             }
-        });
+            inputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.v(TAG,"File not found");
+
+        }
+        return Double.parseDouble(stringBuffer.toString());
+    }
+
+    private void updateBalance(Double newBal){
+        String newData = newBal.toString();
+        writeToFile(newData, getApplicationContext());
+    }
+
+    private void writeToFile(String data, Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("balance.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+            Log.v(TAG, "Updated Balance!");
+        }
+        catch (IOException e) {
+            Log.e(TAG, "Exception! File write failed: " + e.toString());
+        }
     }
 }
