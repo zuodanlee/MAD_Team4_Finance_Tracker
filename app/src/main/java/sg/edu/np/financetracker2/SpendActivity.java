@@ -17,11 +17,21 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class SpendActivity extends AppCompatActivity {
-
+    sharedPref sharedPref;
     final String TAG = "FinanceTracker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //NightMode
+        sharedPref = new sharedPref(this);
+        if(sharedPref.loadNightMode()==true){
+            setTheme(R.style.darkTheme);
+        }
+        else {
+            setTheme(R.style.AppTheme);
+        };
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spend);
 

@@ -1,6 +1,8 @@
 package sg.edu.np.financetracker2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -20,11 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class ReceiveActivity extends AppCompatActivity {
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
-
+    ArrayList<String> categoryList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //NightMode
@@ -84,6 +87,29 @@ public class ReceiveActivity extends AppCompatActivity {
             }
         });
 
+        //RecycerViewCategory
+        final RecyclerView recyclerViewCustom = findViewById(R.id.catRecycleviewButton);
+        final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewCustom.setLayoutManager(mLayoutManager);
+        recyclerViewCustom.setAdapter(mAdaptor);
+        recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
+        InitData();
+
+    }
+    public void InitData(){
+        String uncategorized = "Uncategorized";
+        String food = "Food";
+        String clothing = "Clothing";
+        String utilities = "Utilities";
+        String transport = "Transport";
+        String entertainment = "Entertainment";
+        categoryList.add(uncategorized);
+        categoryList.add(food);
+        categoryList.add(clothing);
+        categoryList.add(utilities);
+        categoryList.add(transport);
+        categoryList.add(entertainment);
     }
 
     // read balance.txt file and get current balance

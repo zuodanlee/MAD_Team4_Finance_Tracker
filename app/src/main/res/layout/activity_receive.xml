@@ -73,13 +73,12 @@
                     android:textColorHint="?attr/textcolor"
                     android:textColor="?attr/textcolor"/>
             </LinearLayout>
-            <EditText
-                android:id="@+id/testing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="testing"
-                android:textColorHint="?attr/textcolor"
-                android:textColor="?attr/textcolor"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/catRecycleviewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                tools:listitem="@layout/recycler_view_item_category"/>
         </LinearLayout>
 
 

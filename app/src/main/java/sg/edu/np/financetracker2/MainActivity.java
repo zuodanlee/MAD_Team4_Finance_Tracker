@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         Log.v(TAG, "Balance: " + balanceAmount);
         Log.v(TAG, "Displaying balance...");
         Double displayAmount = Math.abs(balanceAmount);
+
         if (balanceAmount >= 0){
             balance.setText("$" + displayAmount);
         }
