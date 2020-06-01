@@ -1,11 +1,13 @@
 package sg.edu.np.financetracker2;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -90,16 +92,33 @@ public class SettingActivity extends AppCompatActivity {
         clearData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG,"Data Cleared.");
-                double balanceAmount = getBalance();
-                Log.v(TAG, "Balance: " + balanceAmount);
-                balanceAmount = 0;
-                updateBalance(balanceAmount);
-                Intent deductBal = new Intent(SettingActivity.this, MainActivity.class);
-                startActivity(deductBal);
-                finish();
-                //Notification Data has been cleared
-                Toast.makeText(getApplicationContext(), "Data has been cleared", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Cleat Data");
+                builder.setMessage("Are you sure you want to clear you data?");
+                //Clear Data
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        Log.v(TAG,"Data Cleared.");
+                        double balanceAmount = getBalance();
+                        Log.v(TAG, "Balance: " + balanceAmount);
+                        balanceAmount = 0;
+                        updateBalance(balanceAmount);
+                        Intent deductBal = new Intent(SettingActivity.this, MainActivity.class);
+                        startActivity(deductBal);
+                        finish();
+                        //Notification Data has been cleared
+                        Toast.makeText(getApplicationContext(), "Data has been cleared", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                //Cancel back to setting page
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
             }
         });
 

@@ -68,17 +68,18 @@
                 <EditText
                     android:id="@+id/categoryEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:hint="Category"
                     android:textColorHint="?attr/textcolor"
-                    android:textColor="?attr/textcolor"/>
+                    android:textColor="?attr/textcolor"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/catRecycleviewButton"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                tools:listitem="@layout/recycler_view_item_category"/>
+                tools:listitem="@layout/recycler_view_item_category" />
         </LinearLayout>
 
 

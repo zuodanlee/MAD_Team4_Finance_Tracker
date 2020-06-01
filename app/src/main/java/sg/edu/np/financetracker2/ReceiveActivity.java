@@ -45,6 +45,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
         Button addBal = (Button)findViewById(R.id.saveButton);
         final EditText etAddAmt = findViewById(R.id.addBalanceAmt);
+        final EditText categoryEditText = findViewById(R.id.categoryEditText);
         addBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +55,11 @@ public class ReceiveActivity extends AppCompatActivity {
                 try {
                     balanceAmount = getBalance();
                     spentAmt = Double.parseDouble(etAddAmt.getText().toString());
+
+                    //if categoryEditext is empty it will be uncategorized
+                    if (categoryEditText.length() == 0 ){
+                        categoryEditText.setText("Uncategorized");
+                    }
 
                     //Validation
                     if (spentAmt== 0 | spentAmt<0){
@@ -76,6 +82,13 @@ public class ReceiveActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Receive category from adapter
+        Intent i = getIntent();
+        String category = i.getStringExtra("Category");
+        categoryEditText.setText(category);
+
+        //Back to Main Activity button
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

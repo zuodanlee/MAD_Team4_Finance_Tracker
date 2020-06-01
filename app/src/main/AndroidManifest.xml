@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.np.financetracker2">
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +10,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ReportActivity"></activity>
         <activity android:name=".SettingActivity" />
-        <activity android:name=".SpendActivity" />
+        <activity android:name=".SpendActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ReceiveActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".MainActivity">
