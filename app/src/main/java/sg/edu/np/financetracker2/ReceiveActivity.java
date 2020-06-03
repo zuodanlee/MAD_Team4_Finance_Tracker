@@ -15,14 +15,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ReceiveActivity extends AppCompatActivity {
     sharedPref sharedPref;
@@ -45,7 +51,21 @@ public class ReceiveActivity extends AppCompatActivity {
 
         Button addBal = (Button)findViewById(R.id.saveButton);
         final EditText etAddAmt = findViewById(R.id.addBalanceAmt);
-        final EditText categoryEditText = findViewById(R.id.categoryEditText);
+        final TextView categoryTextView = findViewById(R.id.categoryTextView);
+
+
+        //getdate
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
+        final String[] newDate = currentDate.split(",");
+        //test.setText(newDate[0]);
+
+        //Receive category from adapter
+        Intent i = getIntent();
+        final String category = i.getStringExtra("Category");
+        categoryTextView.setText(category);
+
+
         addBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,8 +77,8 @@ public class ReceiveActivity extends AppCompatActivity {
                     spentAmt = Double.parseDouble(etAddAmt.getText().toString());
 
                     //if categoryEditext is empty it will be uncategorized
-                    if (categoryEditText.length() == 0 ){
-                        categoryEditText.setText("Uncategorized");
+                    if (categoryTextView.length() == 0 ){
+                        categoryTextView.setText("Uncategorized");
                     }
 
                     //Validation
@@ -67,10 +87,20 @@ public class ReceiveActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        //RecordPrice
+                        String price = "+" + spentAmt + " SGD";
+                        Log.v(TAG,price);
+
+
+
+                        //UpdateBalance to main page
                         Log.v(TAG, "Balance: " + balanceAmount);
                         balanceAmount += spentAmt;
                         updateBalance(balanceAmount);
                         Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
+                        //create transactionhistoryobject
+                        transactionHistoryItem hObject = new transactionHistoryItem(R.drawable.ic_home_black_24dp,category,category,newDate[0],price);
+                        addBal.putExtra("MyClass", hObject);
                         startActivity(addBal);
                         finish();
                     }
@@ -82,11 +112,6 @@ public class ReceiveActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //Receive category from adapter
-        Intent i = getIntent();
-        String category = i.getStringExtra("Category");
-        categoryEditText.setText(category);
 
         //Back to Main Activity button
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);

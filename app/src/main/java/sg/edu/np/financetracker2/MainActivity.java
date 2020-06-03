@@ -2,6 +2,9 @@ package sg.edu.np.financetracker2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +25,18 @@ import java.io.InputStreamReader;
 
 import java.io.OutputStreamWriter;
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     sharedPref sharedPref;
     double balanceAmount;
     final String TAG = "FinanceTracker";
+    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
+
+    private RecyclerView mRecylerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +95,30 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        //RecycleViewHistory
+        final RecyclerView recyclerViewCustom = findViewById(R.id.mainRecycleView);
+        recyclerViewCustom.setHasFixedSize(true);
+        final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        recyclerViewCustom.setLayoutManager(mLayoutManager);
+        recyclerViewCustom.setAdapter(mAdaptor);
+        recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
+
+        historyList.add(new transactionHistoryItem (R.drawable.ic_settings_black_24dp,"testing","sdfadsfa","hifdsf","hfdsfds"));
+
+        /*//receiving intent from receiveActivity
+        Intent receivingEnd = getIntent();
+        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
+        historyList.add(obj);
+*/
+
         Log.v(TAG, "test");
 
         if (balanceExists() == false){
             try {
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("balance.txt", Context.MODE_PRIVATE));
-                outputStreamWriter.write("0.0");
+                outputStreamWriter.write("0.00");
                 outputStreamWriter.close();
                 Log.v(TAG, "Initiated Balance!");
             }

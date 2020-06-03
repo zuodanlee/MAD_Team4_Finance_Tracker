@@ -21,52 +21,65 @@
 
     <Button
         android:id="@+id/buttonSpend"
-        android:layout_width="415dp"
-        android:layout_height="264dp"
-        android:background="#EC8982"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="125dp"
+        android:background="@drawable/rounded_btn_spend"
         android:text="Spend"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonReceive"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="100dp"
-        android:background="#85D9FF"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="125dp"
+        android:background="@drawable/rounded_btn_receive"
         android:text="Receive"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSpend"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toEndOf="@+id/buttonSpend"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="Balance: "
         android:textColor="?attr/textcolor"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSpend" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050" />
 
     <TextView
         android:id="@+id/balanceAmount"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="$0"
+        android:layout_height="wrap_content"
+        android:text="$0.00"
         android:textColor="?attr/textcolor"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonReceive"
+        android:textSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textBalance"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.103" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainRecycleView"
+        android:layout_width="340dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.394"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBalance"
-        app:layout_constraintVertical_bias="0.565" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.722"
+        tools:listitem="@layout/recycler_view_item_history"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

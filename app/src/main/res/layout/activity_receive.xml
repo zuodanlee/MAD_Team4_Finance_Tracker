@@ -29,7 +29,7 @@
                 android:id="@+id/addBalanceAmt"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="0.0"
+                android:text="0.00"
                 android:textAlignment="center"
                 android:textColor="?attr/textcolor"
                 android:textSize="50dp" />
@@ -38,7 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
 
             <ImageView
                 android:layout_width="36dp"
@@ -60,19 +61,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="match_parent"
                     app:srcCompat="@raw/category"/>
-                <EditText
-                    android:id="@+id/categoryEditText"
+                <TextView
+                    android:id="@+id/categoryTextView"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:hint="Category"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="5dp"
+                    android:textSize="17dp"
                     android:textColorHint="?attr/textcolor"
-                    android:textColor="?attr/textcolor"
-                    android:background="@android:color/transparent"/>
+                    android:textColor="?attr/textcolor" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
