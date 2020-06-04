@@ -1,7 +1,6 @@
 package sg.edu.np.financetracker2;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,8 +18,8 @@ public class recycleViewHolderHistory extends RecyclerView.ViewHolder{
         mImageView = itemView.findViewById(R.id.ImageView);
         mLine1 = itemView.findViewById(R.id.line1);
         mLine2 = itemView.findViewById(R.id.line2);
-        mDate = itemView.findViewById(R.id.date);
-        mPrice = itemView.findViewById(R.id.price);
+        mDate = itemView.findViewById(R.id.tvDate);
+        mPrice = itemView.findViewById(R.id.tvPrice);
     }
 
 

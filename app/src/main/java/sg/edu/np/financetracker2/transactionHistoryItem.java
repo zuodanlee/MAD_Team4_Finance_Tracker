@@ -9,12 +9,12 @@ public class transactionHistoryItem implements Serializable {
     private String mDate;
     private  String mPrice;
 
-    public transactionHistoryItem(int imageResource,String line1,String line2,String date, String price){
-        imageResource = mImageResource;
-        line1 = mLine1;
-        line2 = mLine2;
-        date = mDate;
-        price = mPrice;
+    public transactionHistoryItem(int imageResource, String line1, String line2, String date, String price){
+        mImageResource = imageResource;
+        mLine1 = line1;
+        mLine2 = line2;
+        mDate = date;
+        mPrice = price;
     }
 
     public int getmImageResource(){

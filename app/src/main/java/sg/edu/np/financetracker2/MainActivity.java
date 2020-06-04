@@ -97,15 +97,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //RecycleViewHistory
-        final RecyclerView recyclerViewCustom = findViewById(R.id.mainRecycleView);
+        historyList.add(new transactionHistoryItem (R.drawable.ic_settings_black_24dp,"testing","sdfadsfa","hifdsf","hfdsfds"));
+
+        final RecyclerView recyclerViewCustom = findViewById(R.id.rvHistory);
         recyclerViewCustom.setHasFixedSize(true);
         final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
         recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
-
-        historyList.add(new transactionHistoryItem (R.drawable.ic_settings_black_24dp,"testing","sdfadsfa","hifdsf","hfdsfds"));
 
         /*//receiving intent from receiveActivity
         Intent receivingEnd = getIntent();
