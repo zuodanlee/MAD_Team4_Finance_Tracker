@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import java.util.Locale;
 public class ReceiveActivity extends AppCompatActivity {
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
+    int image;
     ArrayList<String> categoryList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +78,13 @@ public class ReceiveActivity extends AppCompatActivity {
                     balanceAmount = getBalance();
                     spentAmt = Double.parseDouble(etAddAmt.getText().toString());
 
-                    //if categoryEditext is empty it will be uncategorized
-                    if (categoryTextView.length() == 0 ){
-                        categoryTextView.setText("Uncategorized");
-                    }
-
                     //Validation
-                    if (spentAmt== 0 | spentAmt<0){
+                    //if categoryTextView is empty it will be uncategorized
+                    if(categoryTextView.length() == 0){
+                        //Notification to
+                        Toast.makeText(getApplicationContext(), "Please choose a category", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (spentAmt== 0 | spentAmt<0){
                         //Notification to enter a price
                         Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
                     }
@@ -91,15 +93,15 @@ public class ReceiveActivity extends AppCompatActivity {
                         String price = "+" + spentAmt + " SGD";
                         Log.v(TAG,price);
 
-
-
                         //UpdateBalance to main page
                         Log.v(TAG, "Balance: " + balanceAmount);
                         balanceAmount += spentAmt;
                         updateBalance(balanceAmount);
                         Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
+
+                        InitImage(category);
                         //create transactionhistoryobject
-                        transactionHistoryItem hObject = new transactionHistoryItem(R.drawable.ic_home_black_24dp,category,category,newDate[0],price);
+                        transactionHistoryItem hObject = new transactionHistoryItem(image,category,category,newDate[0],price);
                         addBal.putExtra("MyClass", hObject);
                         startActivity(addBal);
                         finish();
@@ -148,6 +150,27 @@ public class ReceiveActivity extends AppCompatActivity {
         categoryList.add(utilities);
         categoryList.add(transport);
         categoryList.add(entertainment);
+    }
+    public int InitImage(String category){
+        if(category.equals("Food")){
+            image= R.raw.food;
+        }
+        else if (category.equals("Uncategorized")){
+            image= R.raw.uncategorized;
+        }
+        else if (category.equals("Clothing")){
+            image= R.raw.clothing;
+        }
+        else if(category.equals("Utilities")){
+            image= R.raw.utilities;
+        }
+        else if(category.equals("Transport")){
+            image= R.raw.transport;
+        }
+        else{
+            image= R.raw.entertainment;
+        }
+        return image;
     }
 
     // read balance.txt file and get current balance

@@ -98,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
         //RecycleViewHistory
         historyList.add(new transactionHistoryItem (R.drawable.ic_settings_black_24dp,"testing","sdfadsfa","hifdsf","hfdsfds"));
+        //receiving intent from receiveActivity
+        Intent receivingEnd = getIntent();
+        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
+        if(obj != null){
+            historyList.add(obj);
+        }
 
         final RecyclerView recyclerViewCustom = findViewById(R.id.rvHistory);
         recyclerViewCustom.setHasFixedSize(true);
@@ -107,11 +113,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewCustom.setAdapter(mAdaptor);
         recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
 
-        /*//receiving intent from receiveActivity
-        Intent receivingEnd = getIntent();
-        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
-        historyList.add(obj);
-*/
+
+
+
 
         Log.v(TAG, "test");
 
