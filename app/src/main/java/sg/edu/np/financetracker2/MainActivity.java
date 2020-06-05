@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +28,7 @@ import java.io.InputStreamReader;
 
 import java.io.OutputStreamWriter;
 import java.lang.Math;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
     double balanceAmount;
     final String TAG = "FinanceTracker";
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
-
-    private RecyclerView mRecylerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +96,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadData();
         //RecycleViewHistory
-        historyList.add(new transactionHistoryItem (R.drawable.ic_settings_black_24dp,"testing","sdfadsfa","hifdsf","hfdsfds"));
-        //receiving intent from receiveActivity
-        Intent receivingEnd = getIntent();
-        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
-        if(obj != null){
-            historyList.add(obj);
-        }
-
         final RecyclerView recyclerViewCustom = findViewById(R.id.rvHistory);
         recyclerViewCustom.setHasFixedSize(true);
         final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
@@ -112,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
         recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
+
+        //receiving intent from receiveActivity
+        Intent receivingEnd = getIntent();
+        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
+        if(obj != null){
+            historyList.add(obj);
+        }
+        saveData();
 
 
 
@@ -150,6 +151,26 @@ public class MainActivity extends AppCompatActivity {
             balance.setText("-$" + displayAmount);
         }
     }
+    private void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(historyList);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list",null);
+        Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
+        historyList =  gson.fromJson(json,type);
+
+        if(historyList == null){
+            historyList = new ArrayList<>();
+        }
+    }
+
 
     // read balance.txt file and get current balance
     private Double getBalance(){

@@ -40,10 +40,9 @@ public class ReceiveActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //NightMode
         sharedPref = new sharedPref(this);
-        if(sharedPref.loadNightMode()==true){
+        if (sharedPref.loadNightMode() == true) {
             setTheme(R.style.darkTheme);
-        }
-        else {
+        } else {
             setTheme(R.style.AppTheme);
         };
 
@@ -51,7 +50,7 @@ public class ReceiveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receive);
 
 
-        Button addBal = (Button)findViewById(R.id.saveButton);
+        Button addBal = (Button) findViewById(R.id.saveButton);
         final EditText etAddAmt = findViewById(R.id.addBalanceAmt);
         final TextView categoryTextView = findViewById(R.id.categoryTextView);
 
@@ -80,18 +79,16 @@ public class ReceiveActivity extends AppCompatActivity {
 
                     //Validation
                     //if categoryTextView is empty it will be uncategorized
-                    if(categoryTextView.length() == 0){
+                    if (categoryTextView.length() == 0) {
                         //Notification to
                         Toast.makeText(getApplicationContext(), "Please choose a category", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (spentAmt== 0 | spentAmt<0){
+                    } else if (spentAmt == 0 | spentAmt < 0) {
                         //Notification to enter a price
                         Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         //RecordPrice
                         String price = "+" + spentAmt + " SGD";
-                        Log.v(TAG,price);
+                        Log.v(TAG, price);
 
                         //UpdateBalance to main page
                         Log.v(TAG, "Balance: " + balanceAmount);
@@ -101,14 +98,12 @@ public class ReceiveActivity extends AppCompatActivity {
 
                         InitImage(category);
                         //create transactionhistoryobject
-                        transactionHistoryItem hObject = new transactionHistoryItem(image,category,category,newDate[0],price);
+                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, category, newDate[0], price);
                         addBal.putExtra("MyClass", hObject);
                         startActivity(addBal);
                         finish();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     //Notification to enter a price
                     Toast.makeText(getApplicationContext(), "Invalid Price, Please Try Again", Toast.LENGTH_SHORT).show();
                 }
@@ -120,7 +115,7 @@ public class ReceiveActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG,"Back to Main Activity");
+                Log.v(TAG, "Back to Main Activity");
                 Intent backToMain = new Intent(ReceiveActivity.this, MainActivity.class);
                 startActivity(backToMain);
                 finish();
@@ -130,14 +125,16 @@ public class ReceiveActivity extends AppCompatActivity {
         //RecycerViewCategory
         final RecyclerView recyclerViewCustom = findViewById(R.id.catRecycleviewButton);
         final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
         recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
         InitData();
 
+
     }
-    public void InitData(){
+
+    public void InitData() {
         String uncategorized = "Uncategorized";
         String food = "Food";
         String clothing = "Clothing";
@@ -151,49 +148,45 @@ public class ReceiveActivity extends AppCompatActivity {
         categoryList.add(transport);
         categoryList.add(entertainment);
     }
-    public int InitImage(String category){
-        if(category.equals("Food")){
-            image= R.raw.food;
-        }
-        else if (category.equals("Uncategorized")){
-            image= R.raw.uncategorized;
-        }
-        else if (category.equals("Clothing")){
-            image= R.raw.clothing;
-        }
-        else if(category.equals("Utilities")){
-            image= R.raw.utilities;
-        }
-        else if(category.equals("Transport")){
-            image= R.raw.transport;
-        }
-        else{
-            image= R.raw.entertainment;
+
+    public int InitImage(String category) {
+        if (category.equals("Food")) {
+            image = R.raw.food;
+        } else if (category.equals("Uncategorized")) {
+            image = R.raw.uncategorized;
+        } else if (category.equals("Clothing")) {
+            image = R.raw.clothing;
+        } else if (category.equals("Utilities")) {
+            image = R.raw.utilities;
+        } else if (category.equals("Transport")) {
+            image = R.raw.transport;
+        } else {
+            image = R.raw.entertainment;
         }
         return image;
     }
 
     // read balance.txt file and get current balance
-    private Double getBalance(){
+    private Double getBalance() {
         String data = "";
         StringBuffer stringBuffer = new StringBuffer();
 
-        try{
+        try {
             InputStream inputStream = getApplicationContext().openFileInput("balance.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            while((data = reader.readLine()) != null){
+            while ((data = reader.readLine()) != null) {
                 stringBuffer.append(data);
             }
             inputStream.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.v(TAG,"File not found");
+            Log.v(TAG, "File not found");
 
         }
         return Double.parseDouble(stringBuffer.toString());
     }
 
-    private void updateBalance(Double newBal){
+    private void updateBalance(Double newBal) {
         String newData = newBal.toString();
         writeToFile(newData, getApplicationContext());
     }
@@ -204,8 +197,7 @@ public class ReceiveActivity extends AppCompatActivity {
             outputStreamWriter.write(data);
             outputStreamWriter.close();
             Log.v(TAG, "Updated Balance!");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Log.e(TAG, "Exception! File write failed: " + e.toString());
         }
     }

@@ -99,6 +99,9 @@ public class SettingActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(TAG,"Data Cleared.");
+                        //clear transaction item
+                        clearTransactionHistoryItem();
+                        ///updatebal
                         double balanceAmount = getBalance();
                         Log.v(TAG, "Balance: " + balanceAmount);
                         balanceAmount = 0;
@@ -133,6 +136,11 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    private void clearTransactionHistoryItem(){
+        SharedPreferences preferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        preferences.edit().clear().commit();
+    }
+
 
     // read balance.txt file and get current balance
     private Double getBalance(){

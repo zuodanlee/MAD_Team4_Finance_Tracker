@@ -42,7 +42,6 @@ public class recycleViewAdaptorCategory extends RecyclerView.Adapter<recycleView
                     Intent i = new Intent(v.getContext(), ReceiveActivity.class);
                     i.putExtra("Category",s);
                     v.getContext().startActivity(i); //starting new activity
-
                 }
             });
 
