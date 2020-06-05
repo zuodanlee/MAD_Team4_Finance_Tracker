@@ -16,22 +16,25 @@ import java.util.ArrayList;
 public class recycleViewAdaptorCategory extends RecyclerView.Adapter<recycleViewHolderCategory> {
     ArrayList<String> data;
     final String TAG = "Adaptor";
+    private recycleViewHolderCategory.OnCategoryListener mOnCategoryListener;
 
-    public recycleViewAdaptorCategory(ArrayList<String> input) {
+    public recycleViewAdaptorCategory(ArrayList<String> input, recycleViewHolderCategory.OnCategoryListener onCategoryListener) {
         data = input;
+        this.mOnCategoryListener = onCategoryListener;
     }
 
     @NonNull
     @Override
     public recycleViewHolderCategory onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_category, parent, false);
-            return new recycleViewHolderCategory(item);
+            return new recycleViewHolderCategory(item, mOnCategoryListener);
         }
 
     @Override
     public void onBindViewHolder(@NonNull recycleViewHolderCategory holder, final int position) {
             final String s = data.get(position);
             holder.catButton.setText(s);
+            /*
             //Set onCLickListener here
             holder.catButton.setOnClickListener(new View.OnClickListener() {
                 //Not complete
@@ -44,6 +47,8 @@ public class recycleViewAdaptorCategory extends RecyclerView.Adapter<recycleView
                     v.getContext().startActivity(i); //starting new activity
                 }
             });
+
+             */
 
         }
 

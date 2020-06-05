@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="134dp"
+            android:layout_height="100dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="Add New Expense"
             android:textAlignment="center"
@@ -45,30 +45,96 @@
 
             <EditText
                 android:id="@+id/deductBalanceAmt"
-                android:layout_width="218dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="0.0"
+                android:text="0.00"
                 android:textAlignment="center"
                 android:textColor="?attr/textcolor"
                 android:textSize="50sp" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@raw/notes" />
+
+            <EditText
+                android:id="@+id/spendEtNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Notes"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@raw/category" />
+
+                <TextView
+                    android:id="@+id/spendTvCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:hint="Category"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="5dp"
+                    android:textColor="?attr/textcolor"
+                    android:textColorHint="?attr/textcolor"
+                    android:textSize="17dp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/spendRvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                tools:listitem="@layout/recycler_view_item_category" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/confirmSpend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:text="Confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        android:id="@+id/spendBSave"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/spendBBack"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spendBSave"
+        app:layout_constraintEnd_toStartOf="@+id/spendBSave"
+        app:layout_constraintTop_toTopOf="@+id/spendBSave"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_delete" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

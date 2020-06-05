@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ReceiveActivity extends AppCompatActivity {
+public class ReceiveActivity extends AppCompatActivity implements recycleViewHolderCategory.OnCategoryListener {
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
     int image;
@@ -124,7 +124,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
         //RecycerViewCategory
         final RecyclerView recyclerViewCustom = findViewById(R.id.catRecycleviewButton);
-        final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList);
+        final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
@@ -200,5 +200,10 @@ public class ReceiveActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, "Exception! File write failed: " + e.toString());
         }
+    }
+
+    @Override
+    public void onCategoryClick(int position) {
+
     }
 }
