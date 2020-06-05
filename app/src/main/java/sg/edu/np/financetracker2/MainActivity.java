@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Button buttonSpend = (Button) findViewById(R.id.buttonSpend);
         final Button buttonReceive = (Button) findViewById(R.id.buttonReceive);
+        final Button seeAllTransactionButton = (Button)findViewById(R.id.seeAllTransactionButton);
 
         buttonSpend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +91,23 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent2 = new Intent(MainActivity.this, ReportActivity.class);
                         startActivity(intent2);
                         break;
+                    case R.id.history:
+                        Intent intent4 = new Intent(MainActivity.this, TransactionHistoryActivity.class);
+                        startActivity(intent4);
+                        break;
                 }
 
                 return false;
+            }
+        });
+
+        //seeAllTransactionButton
+        seeAllTransactionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent historyPage = new Intent(MainActivity.this, TransactionHistoryActivity.class);
+                startActivity(historyPage);
+                finish();
             }
         });
 
@@ -110,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
         if(obj != null){
-            historyList.add(obj);
+            historyList.add(0,obj);
         }
         saveData();
 

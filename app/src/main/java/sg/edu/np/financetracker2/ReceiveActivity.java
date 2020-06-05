@@ -35,6 +35,7 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
     int image;
+    private String notes;
     ArrayList<String> categoryList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +54,16 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
         Button addBal = (Button) findViewById(R.id.saveButton);
         final EditText etAddAmt = findViewById(R.id.addBalanceAmt);
         final TextView categoryTextView = findViewById(R.id.categoryTextView);
-
+        final EditText noteEditText = findViewById(R.id.notesEditText);
 
         //getdate
         Calendar calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
         final String[] newDate = currentDate.split(",");
-        //test.setText(newDate[0]);
-
-        //Receive category from adapter
-        Intent i = getIntent();
-        final String category = i.getStringExtra("Category");
-        categoryTextView.setText(category);
-
 
         addBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG, "Adding to balance");
                 double balanceAmount;
                 Double spentAmt;
                 try {
@@ -96,9 +89,16 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
                         updateBalance(balanceAmount);
                         Intent addBal = new Intent(ReceiveActivity.this, MainActivity.class);
 
+                        //getcategory
+                        String category = categoryTextView.getText().toString();
                         InitImage(category);
+                        //getnote
+                        notes = noteEditText.getText().toString();
+                        if(notes.length() == 0){
+                            notes = category;
+                        }
                         //create transactionhistoryobject
-                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, category, newDate[0], price);
+                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, newDate[0], price);
                         addBal.putExtra("MyClass", hObject);
                         startActivity(addBal);
                         finish();
@@ -204,6 +204,8 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
 
     @Override
     public void onCategoryClick(int position) {
-
+        String category = categoryList.get(position);
+        TextView tvCategory = findViewById(R.id.categoryTextView);
+        tvCategory.setText(category);
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.np.financetracker2">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -8,16 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReportActivity"></activity>
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".SpendActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".ReceiveActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".TransactionHistoryActivity" android:label="History"></activity>
+        <activity android:name=".ReportActivity" android:label="Report"/>
+        <activity android:name=".SettingActivity" android:label="Setting"/>
+        <activity
+            android:name=".SpendActivity"
+            android:label="Expenses"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ReceiveActivity"
+            android:label="Income"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

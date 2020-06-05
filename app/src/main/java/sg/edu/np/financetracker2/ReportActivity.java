@@ -36,6 +36,11 @@ public class ReportActivity extends AppCompatActivity {
                         Intent intent3 = new Intent(ReportActivity.this, SettingActivity.class);
                         startActivity(intent3);
                         break;
+                    case R.id.history:
+                        Intent intent4 = new Intent(ReportActivity.this, TransactionHistoryActivity.class);
+                        startActivity(intent4);
+                        break;
+
                 }
 
                 return false;

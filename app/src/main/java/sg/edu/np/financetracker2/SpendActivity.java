@@ -12,21 +12,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SpendActivity extends AppCompatActivity implements recycleViewHolderCategory.OnCategoryListener{
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
     int image;
     ArrayList<String> categoryList = new ArrayList<>();
-
+    private String notes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,23 +50,71 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
 
         Button confirmButton = findViewById(R.id.spendBSave);
         final EditText etSpendAmt = findViewById(R.id.deductBalanceAmt);
+        final EditText noteEditText = findViewById(R.id.spendEtNotes);
+        //getdate
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
+        final String[] newDate = currentDate.split(",");
+        final TextView categoryTextView = findViewById(R.id.spendTvCategory);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent getBal = getIntent();
-                //double balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
-                //Log.v(TAG, "Received data : " + balanceAmount);
-                double balanceAmount = getBalance();
-                Double spentAmt = Double.parseDouble(etSpendAmt.getText().toString());
+                double balanceAmount;
+                Double spentAmt;
+                try {
+                    balanceAmount = getBalance();
+                    spentAmt = Double.parseDouble(etSpendAmt.getText().toString());
 
-                Log.v(TAG, "Balance: " + balanceAmount);
-                balanceAmount -= spentAmt;
-                updateBalance(balanceAmount);
-                Intent deductBal = new Intent(SpendActivity.this, MainActivity.class);
-                //deductBal.putExtra("balanceAmount", balanceAmount);
-                //Log.v(TAG, "Sending data : " + balanceAmount);
-                startActivity(deductBal);
+                    //Validation
+                    //if categoryTextView is empty it will be uncategorized
+                    if (categoryTextView.length() == 0) {
+                        //Notification to
+                        Toast.makeText(getApplicationContext(), "Please choose a category", Toast.LENGTH_SHORT).show();
+                    } else if (spentAmt == 0 | spentAmt < 0) {
+                        //Notification to enter a price
+                        Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //RecordPrice
+                        String price = "-" + spentAmt + " SGD";
+                        Log.v(TAG, price);
+
+                        //UpdateBalance to main page
+                        Log.v(TAG, "Balance: " + balanceAmount);
+                        balanceAmount -= spentAmt;
+                        updateBalance(balanceAmount);
+                        Intent deductBal = new Intent(SpendActivity.this, MainActivity.class);
+
+                        //getcategory
+                        String category = categoryTextView.getText().toString();
+                        InitImage(category);
+                        //getnote
+                        notes = noteEditText.getText().toString();
+                        if(notes.length() == 0){
+                            notes = category;
+                        }
+                        //create transactionhistoryobject
+                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, newDate[0], price);
+                        deductBal.putExtra("MyClass", hObject);
+                        startActivity(deductBal);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    //Notification to enter a price
+                    Toast.makeText(getApplicationContext(), "Invalid Price, Please Try Again", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+        //Back to Main Activity button
+        ImageButton backButton = (ImageButton) findViewById(R.id.spendBBack);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Back to Main Activity");
+                Intent backToMain = new Intent(SpendActivity.this, MainActivity.class);
+                startActivity(backToMain);
                 finish();
             }
         });

@@ -25,7 +25,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="28dp"
         android:background="@drawable/rounded_btn_spend"
-        android:text="Spend"
+        android:text="Expenses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/balanceAmount" />
 
@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="28dp"
         android:background="@drawable/rounded_btn_receive"
-        android:text="Receive"
+        android:text="Income"
         app:layout_constraintBottom_toBottomOf="@+id/buttonSpend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonSpend"
@@ -66,14 +66,41 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistory"
         android:layout_width="350dp"
-        android:layout_height="380dp"
+        android:layout_height="300dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSpend"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/transactionTextView"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/recycler_view_item_history" />
+
+    <Button
+        android:id="@+id/seeAllTransactionButton"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundcolor"
+        android:text="See all transactions"
+        android:textColor="#3392FF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904" />
+
+    <TextView
+        android:id="@+id/transactionTextView"
+        android:layout_width="350dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="212dp"
+        android:textSize="20dp"
+        android:textColor="?attr/textcolor"
+        android:text="Latest Transactions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

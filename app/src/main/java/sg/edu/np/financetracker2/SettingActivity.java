@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.time.zone.ZoneOffsetTransition;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -79,6 +80,10 @@ public class SettingActivity extends AppCompatActivity {
                     case R.id.report:
                         Intent intent3 = new Intent(SettingActivity.this, ReportActivity.class);
                         startActivity(intent3);
+                        break;
+                    case R.id.history:
+                        Intent intent4 = new Intent(SettingActivity.this, TransactionHistoryActivity.class);
+                        startActivity(intent4);
                         break;
                 }
 
