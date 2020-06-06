@@ -78,6 +78,10 @@ public class SettingActivity extends AppCompatActivity {
                         Intent intent4 = new Intent(SettingActivity.this, TransactionHistoryActivity.class);
                         startActivity(intent4);
                         break;
+                    case R.id.goals:
+                        Intent intent5 = new Intent(SettingActivity.this, GoalsActivity.class);
+                        startActivity(intent5);
+                        break;
                 }
 
                 return false;

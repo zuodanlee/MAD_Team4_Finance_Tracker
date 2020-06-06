@@ -12,6 +12,7 @@
         <activity android:name=".TransactionHistoryActivity" android:label="History"></activity>
         <activity android:name=".ReportActivity" android:label="Report"/>
         <activity android:name=".SettingActivity" android:label="Setting"/>
+        <activity android:name=".GoalsActivity" android:label="Financial Goals"/>
         <activity
             android:name=".SpendActivity"
             android:label="Expenses"

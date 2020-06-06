@@ -2,6 +2,7 @@ package sg.edu.np.financetracker2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +41,10 @@ public class ReportActivity extends AppCompatActivity {
                         Intent intent4 = new Intent(ReportActivity.this, TransactionHistoryActivity.class);
                         startActivity(intent4);
                         break;
-
+                    case R.id.goals:
+                        Intent intent5 = new Intent(ReportActivity.this, GoalsActivity.class);
+                        startActivity(intent5);
+                        break;
                 }
 
                 return false;

@@ -58,6 +58,10 @@ public class TransactionHistoryActivity extends AppCompatActivity {
                         Intent intent4 = new Intent(TransactionHistoryActivity.this, MainActivity.class);
                         startActivity(intent4);
                         break;
+                    case R.id.goals:
+                        Intent intent5 = new Intent(TransactionHistoryActivity.this, GoalsActivity.class);
+                        startActivity(intent5);
+                        break;
                 }
 
                 return false;
