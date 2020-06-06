@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 public class TransactionHistoryActivity extends AppCompatActivity {
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     sharedPref sharedPref;
+    private recycleViewAdaptorHistory mAdaptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         //RecycleViewHistory
         final RecyclerView recyclerViewCustom = findViewById(R.id.rvAllHistory);
         recyclerViewCustom.setHasFixedSize(true);
-        final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
+        mAdaptor = new recycleViewAdaptorHistory(historyList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
@@ -82,5 +86,28 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         if (historyList == null) {
             historyList = new ArrayList<>();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu,menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdaptor.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 }

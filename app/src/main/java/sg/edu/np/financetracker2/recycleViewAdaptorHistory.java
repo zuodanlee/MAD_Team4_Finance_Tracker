@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewHolderHistory> {
+public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewHolderHistory> implements Filterable {
     ArrayList<transactionHistoryItem> data;
+    ArrayList<transactionHistoryItem> dataListFull;
     final String TAG = "Adaptor";
     public ImageView mImageView;
     public TextView mLine1;
@@ -25,8 +29,8 @@ public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewH
 
     public recycleViewAdaptorHistory(ArrayList<transactionHistoryItem> input) {
         data = input;
+        dataListFull = new ArrayList<>(input);
     }
-
 
 
     @Override
@@ -49,5 +53,41 @@ public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewH
     public int getItemCount() {
         return data.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return dataFilter;
+    }
+
+    private Filter dataFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<transactionHistoryItem> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(dataListFull);
+            }
+            else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (transactionHistoryItem item : dataListFull){
+                    if (item.getmLine1().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values =filteredList;
+            return  results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            data.clear();
+            data.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
+
 
