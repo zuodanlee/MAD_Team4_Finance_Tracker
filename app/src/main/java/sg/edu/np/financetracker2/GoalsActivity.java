@@ -2,12 +2,14 @@ package sg.edu.np.financetracker2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class GoalsActivity extends AppCompatActivity {
@@ -24,9 +29,10 @@ public class GoalsActivity extends AppCompatActivity {
     ArrayList<Goal> goals = new ArrayList<>();
     private Button addGoal;
     private EditText newGoal;
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //If dark theme is ON
         sharedPref = new sharedPref(this);
         if(sharedPref.loadNightMode()){
             setTheme(R.style.darkTheme);
@@ -36,9 +42,10 @@ public class GoalsActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goals);
-
+        loadGoals(); //Load list of goals from shared prefs
+        //Goal recyclerview adapter and layout manager
         final RecyclerView recyclerGoal = findViewById(R.id.recyclerGoal);
-        final recyclerGoalAdapter gAdapter = new recyclerGoalAdapter(goals);
+        final recyclerGoalAdapter gAdapter = new recyclerGoalAdapter(goals,this);
         LinearLayoutManager gLayoutManager = new LinearLayoutManager(this);
         recyclerGoal.setLayoutManager(gLayoutManager);
         recyclerGoal.setItemAnimator(new DefaultItemAnimator());
@@ -46,16 +53,28 @@ public class GoalsActivity extends AppCompatActivity {
 
         addGoal = (Button) findViewById(R.id.addGoal);
         newGoal = (EditText) findViewById(R.id.goalText);
+        //Adding new goal
         addGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String input = newGoal.getText().toString();
+                //If no input
+                if(input.length()==0){
+                    Toast.makeText(GoalsActivity.this,"Please enter a goal",Toast.LENGTH_SHORT).show();
+                    return;
+                //If input exceeds 60 characters
+                }else if (input.length()>60){
+                    Toast.makeText(GoalsActivity.this,"Goal cannot exceed 60 letters",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Goal goal = new Goal();
                 goal.setGoal(input);
                 goals.add(goal);
+                saveGoals(); //Save list of goals to shared prefs
+                //Update activity
                 gAdapter.notifyDataSetChanged();
                 showNewEntry(recyclerGoal,goals);
-                newGoal.setText("");
+                newGoal.setText(""); //Reset input field
             }
         });
         //Bottom Navigation View
@@ -91,5 +110,26 @@ public class GoalsActivity extends AppCompatActivity {
 
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rv.getWindowToken(), 0);
+    }
+    //Save list of goals to shared prefs
+    private void saveGoals(){
+        sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(goals);
+        editor.putString("Goal List", json);
+        editor.apply();
+    }
+    //Load list of goals from shared prefs
+    private void loadGoals(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Goal List",null);
+        Type type = new TypeToken<ArrayList<Goal>>(){}.getType();
+        goals =  gson.fromJson(json,type);
+
+        if(goals == null){
+            goals = new ArrayList<>();
+        }
     }
 }

@@ -95,8 +95,8 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Cleat Data");
-                builder.setMessage("Are you sure you want to clear you data?");
+                builder.setTitle("Clear Data");
+                builder.setMessage("Are you sure you want to clear your data?");
                 //Clear Data
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
