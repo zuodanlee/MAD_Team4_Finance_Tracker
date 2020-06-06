@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.Math;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent spendPage = new Intent(MainActivity.this, SpendActivity.class);
-                //spendPage.putExtra("balanceAmount", balanceAmount);
-                //Log.v(TAG,"Sending data : " + balanceAmount);
                 startActivity(spendPage);
                 finish();
             }
@@ -71,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent receivePage = new Intent(MainActivity.this, ReceiveActivity.class);
-                //receivePage.putExtra("balanceAmount", balanceAmount);
-                //Log.v(TAG,"Sending data : " + balanceAmount);
                 startActivity(receivePage);
                 finish();
             }
@@ -158,13 +155,17 @@ public class MainActivity extends AppCompatActivity {
         Log.v(TAG, "Balance: " + balanceAmount);
         Log.v(TAG, "Displaying balance...");
         Double displayAmount = Math.abs(balanceAmount);
+        String displayString;
 
         if (balanceAmount >= 0){
-            balance.setText("$" + displayAmount);
+            DecimalFormat df = new DecimalFormat("0.00");
+            displayString = "$" + df.format(displayAmount);
         }
         else{
-            balance.setText("-$" + displayAmount);
+            DecimalFormat df = new DecimalFormat("0.00");
+            displayString = "-$" + df.format(displayAmount);
         }
+        balance.setText(displayString);
     }
     private void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
