@@ -46,7 +46,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
 
         anyChartViewI =findViewById(R.id.any_chart_view);
-        anyChartViewE = findViewById(R.id.any_chart_view_2);
+        //anyChartViewE = findViewById(R.id.any_chart_view_2);
 
         //income
         double foodIPrice =0.00;
@@ -127,7 +127,6 @@ public class ReportActivity extends AppCompatActivity {
         expensesList.add(utilitiesEPrice);
         expensesList.add(transportEPrice);
         expensesList.add(entertainmentEPrice);
-        //Log.v(TAG,"FDFDFDSFDFDS: " + incomeList.get(0));
 
         //settting pie chart
         setUpPieChart();
@@ -164,12 +163,17 @@ public class ReportActivity extends AppCompatActivity {
     public void setUpPieChart(){
         Pie pie = AnyChart.pie();
         List<DataEntry> dataEntries = new ArrayList<>();
+        List<DataEntry> dataEntries2 = new ArrayList<>();
 
         for(int i = 0; i<categoryList.length; i++){
+            Log.v(TAG,String.valueOf("Income list: " + incomeList.get(i)));
             dataEntries.add(new ValueDataEntry(categoryList[i],incomeList.get(i)));
+            //dataEntries2.add(new ValueDataEntry(categoryList[i],expensesList.get(i)));
         }
 
         pie.data(dataEntries);
+        //pie.data(dataEntries2);
+        //anyChartViewE.setChart(pie);
         anyChartViewI.setChart(pie);
     }
 

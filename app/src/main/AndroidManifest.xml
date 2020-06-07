@@ -9,10 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransactionHistoryActivity" android:label="History"></activity>
-        <activity android:name=".ReportActivity" android:label="Report"/>
-        <activity android:name=".SettingActivity" android:label="Setting"/>
-        <activity android:name=".GoalsActivity" android:label="Financial Goals"/>
+        <activity
+            android:name=".TransactionHistoryActivity"
+            android:label="History" />
+        <activity
+            android:name=".ReportActivity"
+            android:label="Report" />
+        <activity
+            android:name=".SettingActivity"
+            android:label="Setting" />
+        <activity
+            android:name=".GoalsActivity"
+            android:label="Financial Goals" />
         <activity
             android:name=".SpendActivity"
             android:label="Expenses"
@@ -24,6 +32,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
