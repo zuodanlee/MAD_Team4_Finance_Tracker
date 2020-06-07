@@ -1,6 +1,8 @@
 # MAD_Team4_Finance_Tracker
 
-#MEMBER					STUDENTID
+PLEASE VIEW THIS IN RAW MODE
+
+MEMBER					STUDENTID
 Jordan Lee      S10196128
 Derek Qua       S10196775
 Jonavan Voo     S10196680
