@@ -114,4 +114,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         });
         return true;
     }
+
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
 }

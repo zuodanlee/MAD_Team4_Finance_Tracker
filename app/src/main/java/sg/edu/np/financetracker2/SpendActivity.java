@@ -202,4 +202,9 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
         TextView tvCategory = findViewById(R.id.spendTvCategory);
         tvCategory.setText(category);
     }
+
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
 }

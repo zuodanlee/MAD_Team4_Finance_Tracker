@@ -20,6 +20,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:itemTextColor="?attr/textcolor"
+        app:itemIconTint="?attr/textcolor"
         app:menu="@menu/bottom_nav_menu" />
 
 
@@ -61,7 +63,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="44dp"
                         android:text="Income"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        android:textColor="?attr/textcolor" />
 
                     <com.anychart.AnyChartView
                         android:id="@+id/any_chart_view"
@@ -86,7 +89,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="44dp"
                         android:text="Expenses"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        android:textColor="?attr/textcolor" />
 
                     <com.anychart.AnyChartView
                         android:id="@+id/any_chart_view_2"

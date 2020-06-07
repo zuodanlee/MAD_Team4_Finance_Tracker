@@ -132,4 +132,9 @@ public class GoalsActivity extends AppCompatActivity {
             goals = new ArrayList<>();
         }
     }
+
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
 }

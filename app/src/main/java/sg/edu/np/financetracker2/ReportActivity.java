@@ -220,6 +220,11 @@ public class ReportActivity extends AppCompatActivity {
             historyList = new ArrayList<>();
         }
     }
+
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
 }
 
 

@@ -202,4 +202,9 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
         TextView tvCategory = findViewById(R.id.categoryTextView);
         tvCategory.setText(category);
     }
+
+    protected void onStop(){
+        super.onStop();
+        finish();
+    }
 }
