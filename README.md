@@ -34,3 +34,11 @@ Jordan: Home, Report, Expense, BottomNavBar<br>
 Derek: Home, History, Report, Settings, Income<br>
 Jonavan: Goals, Slides, BottomNavBar<br>
 Aaron: Report, BottomNavBar<br>
+
+SCREENSHOTS<br>
+![](screenshots/screenshot_home.jpeg)<br>
+![](screenshots/screenshot_history.jpeg)<br>
+![](screenshots/screenshot_reportIncome.jpeg)<br>
+![](screenshots/screenshot_reportExpense.jpeg)<br>
+![](screenshots/screenshot_goals.jpeg)<br>
+![](screenshots/screenshot_settings.jpeg)<br>
