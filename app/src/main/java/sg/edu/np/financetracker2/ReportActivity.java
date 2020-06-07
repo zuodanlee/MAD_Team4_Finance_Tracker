@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TabHost;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -45,8 +46,23 @@ public class ReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        anyChartViewI =findViewById(R.id.any_chart_view);
-        //anyChartViewE = findViewById(R.id.any_chart_view_2);
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        //tab1
+        TabHost.TabSpec spec = tabHost.newTabSpec("Income");
+        spec.setContent(R.id.income);
+        spec.setIndicator("Income");
+        tabHost.addTab(spec);
+
+        //tab2
+        TabHost.TabSpec spec2 = tabHost.newTabSpec("Expenses");
+        spec2.setContent(R.id.expenses);
+        spec2.setIndicator("Expenses");
+        tabHost.addTab(spec2);
+
+        anyChartViewI = findViewById(R.id.any_chart_view);
+        anyChartViewE = findViewById(R.id.any_chart_view_2);
 
         //income
         double foodIPrice =0.00;
@@ -118,7 +134,7 @@ public class ReportActivity extends AppCompatActivity {
         incomeList.add(foodIPrice);
         incomeList.add(uncategorizedIPrice);
         incomeList.add(clothingIPrice);
-        incomeList.add(utilitiesEPrice);
+        incomeList.add(utilitiesIPrice);
         incomeList.add(transportIPrice);
         incomeList.add(entertainmentIPrice);
         expensesList.add(foodEPrice);
@@ -128,7 +144,7 @@ public class ReportActivity extends AppCompatActivity {
         expensesList.add(transportEPrice);
         expensesList.add(entertainmentEPrice);
 
-        //settting pie chart
+        //setting pie charts
         setUpPieChart();
 
 
@@ -168,12 +184,12 @@ public class ReportActivity extends AppCompatActivity {
         for(int i = 0; i<categoryList.length; i++){
             Log.v(TAG,String.valueOf("Income list: " + incomeList.get(i)));
             dataEntries.add(new ValueDataEntry(categoryList[i],incomeList.get(i)));
-            //dataEntries2.add(new ValueDataEntry(categoryList[i],expensesList.get(i)));
+            dataEntries2.add(new ValueDataEntry(categoryList[i],expensesList.get(i)));
         }
 
         pie.data(dataEntries);
-        //pie.data(dataEntries2);
-        //anyChartViewE.setChart(pie);
+        pie.data(dataEntries2);
+        anyChartViewE.setChart(pie);
         anyChartViewI.setChart(pie);
     }
 
