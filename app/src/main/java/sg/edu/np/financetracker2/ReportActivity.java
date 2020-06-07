@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -30,8 +31,6 @@ public class ReportActivity extends AppCompatActivity {
     final String TAG = "Report";
     ArrayList<Double> incomeList = new ArrayList<>();
     ArrayList<Double> expensesList = new ArrayList<>();
-    AnyChartView anyChartViewI;
-    AnyChartView anyChartViewE;
     String[] categoryList = {"Food","Uncategorized","Clothing","Utilities","Transport","Entertainment"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,6 @@ public class ReportActivity extends AppCompatActivity {
         spec2.setContent(R.id.expenses);
         spec2.setIndicator("Expenses");
         tabHost.addTab(spec2);
-
-        anyChartViewI = findViewById(R.id.any_chart_view);
-        anyChartViewE = findViewById(R.id.any_chart_view_2);
 
         //income
         double foodIPrice =0.00;
@@ -177,20 +173,39 @@ public class ReportActivity extends AppCompatActivity {
         });
     }
     public void setUpPieChart(){
+        //set up income chart
+        AnyChartView anyChartViewI = findViewById(R.id.any_chart_view);
+        APIlib.getInstance().setActiveAnyChartView(anyChartViewI);
+
         Pie pie = AnyChart.pie();
+
         List<DataEntry> dataEntries = new ArrayList<>();
-        List<DataEntry> dataEntries2 = new ArrayList<>();
 
         for(int i = 0; i<categoryList.length; i++){
             Log.v(TAG,String.valueOf("Income list: " + incomeList.get(i)));
             dataEntries.add(new ValueDataEntry(categoryList[i],incomeList.get(i)));
-            dataEntries2.add(new ValueDataEntry(categoryList[i],expensesList.get(i)));
         }
 
         pie.data(dataEntries);
-        pie.data(dataEntries2);
-        anyChartViewE.setChart(pie);
         anyChartViewI.setChart(pie);
+        Log.v(TAG, "Set Income Chart!");
+
+        //set up expenses chart
+        AnyChartView anyChartViewE = findViewById(R.id.any_chart_view_2);
+        APIlib.getInstance().setActiveAnyChartView(anyChartViewE);
+
+        Pie pie1 = AnyChart.pie();
+
+        List<DataEntry> dataEntries2 = new ArrayList<>();
+
+        for(int i = 0; i<categoryList.length; i++){
+            Log.v(TAG,String.valueOf("Income list: " + incomeList.get(i)));
+            dataEntries2.add(new ValueDataEntry(categoryList[i],expensesList.get(i)));
+        }
+
+        pie1.data(dataEntries2);
+        anyChartViewE.setChart(pie1);
+        Log.v(TAG, "Set Expense Chart!");
     }
 
 
