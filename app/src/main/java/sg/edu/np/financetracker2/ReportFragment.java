@@ -1,15 +1,16 @@
 package sg.edu.np.financetracker2;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TabHost;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
@@ -17,7 +18,6 @@ import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,27 +25,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReportActivity extends AppCompatActivity {
-    sharedPref sharedPref;
+public class ReportFragment extends Fragment {
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     final String TAG = "Report";
     ArrayList<Double> incomeList = new ArrayList<>();
     ArrayList<Double> expensesList = new ArrayList<>();
     String[] categoryList = {"Food","Uncategorized","Clothing","Utilities","Transport","Entertainment"};
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View reportView = inflater.inflate(R.layout.fragment_report, container, false);
 
-        sharedPref = new sharedPref(this);
-        if(sharedPref.loadNightMode()){
-            setTheme(R.style.darkTheme);
-        }
-        else {
-            setTheme(R.style.AppTheme);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report);
-
-        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+        TabHost tabHost = (TabHost) reportView.findViewById(R.id.tabHost);
         tabHost.setup();
 
         //tab1
@@ -141,41 +133,14 @@ public class ReportActivity extends AppCompatActivity {
         expensesList.add(entertainmentEPrice);
 
         //setting pie charts
-        setUpPieChart();
+        setUpPieChart(reportView);
 
-
-        //Bottom Navigation View
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(2).setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()){
-                    case R.id.home:
-                        Intent intent2 = new Intent(ReportActivity.this, MainActivity.class);
-                        startActivity(intent2);
-                        break;
-                    case R.id.settings:
-                        Intent intent3 = new Intent(ReportActivity.this, SettingActivity.class);
-                        startActivity(intent3);
-                        break;
-                    case R.id.history:
-                        Intent intent4 = new Intent(ReportActivity.this, TransactionHistoryActivity.class);
-                        startActivity(intent4);
-                        break;
-                    case R.id.goals:
-                        Intent intent5 = new Intent(ReportActivity.this, GoalsActivity.class);
-                        startActivity(intent5);
-                        break;
-                }
-
-                return false;
-            }
-        });
+        return reportView;
     }
-    public void setUpPieChart(){
+
+    public void setUpPieChart(View reportView){
         //set up income chart
-        AnyChartView anyChartViewI = findViewById(R.id.any_chart_view);
+        AnyChartView anyChartViewI = reportView.findViewById(R.id.any_chart_view);
         APIlib.getInstance().setActiveAnyChartView(anyChartViewI);
 
         Pie pie = AnyChart.pie();
@@ -192,7 +157,7 @@ public class ReportActivity extends AppCompatActivity {
         Log.v(TAG, "Set Income Chart!");
 
         //set up expenses chart
-        AnyChartView anyChartViewE = findViewById(R.id.any_chart_view_2);
+        AnyChartView anyChartViewE = reportView.findViewById(R.id.any_chart_view_2);
         APIlib.getInstance().setActiveAnyChartView(anyChartViewE);
 
         Pie pie1 = AnyChart.pie();
@@ -211,7 +176,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
     private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("task list",null);
         Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
@@ -221,12 +186,4 @@ public class ReportActivity extends AppCompatActivity {
             historyList = new ArrayList<>();
         }
     }
-
-    protected void onStop(){
-        super.onStop();
-        finish();
-    }
 }
-
-
-
