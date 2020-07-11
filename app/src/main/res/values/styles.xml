@@ -4,11 +4,12 @@
     <!--Light/Day Mode theme-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#2196F3</item> //blue
-        <item name="colorPrimaryDark">#1976D2</item>
+        <item name="colorPrimary">#8D99AE</item>
+        <item name="colorPrimaryDark">#616A6B</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="backgroundcolor">#fcfcfc</item>
-        <item name="cardBackgroundColor">#ffffff</item>
+        <item name="backgroundcolor">#F7F9F9</item>
+        <item name="cardBackgroundColor">#fcfcfc</item>
+        <item name="whitecolor">@android:color/background_light</item>
         <item name="textcolor">#808080</item>
         <item name="tintcolor">#000000</item>
         <item name="butttoncolor">#FFFFFF</item>
@@ -22,7 +23,8 @@
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundcolor">#303030</item>
-        <item name="cardBackgroundColor">#424242</item>
+        <item name="cardBackgroundColor">#303030</item>
+        <item name="whitecolor">#303030</item>
         <item name="textcolor">#ffffff</item>
         <item name="tintcolor">#ffffff</item>
         <item name="butttoncolor">#000000</item>

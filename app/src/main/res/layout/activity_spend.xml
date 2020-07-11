@@ -117,24 +117,26 @@
 
     <Button
         android:id="@+id/spendBSave"
-        android:layout_width="95dp"
-        android:layout_height="60dp"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="28dp"
         android:layout_marginBottom="28dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/transactionhistoryitemborder"/>
 
     <ImageButton
         android:id="@+id/spendBBack"
-        android:layout_width="95dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="28dp"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/spendBSave"
         app:layout_constraintEnd_toStartOf="@+id/spendBSave"
         app:layout_constraintTop_toTopOf="@+id/spendBSave"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="@drawable/transactionhistoryitemborder"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

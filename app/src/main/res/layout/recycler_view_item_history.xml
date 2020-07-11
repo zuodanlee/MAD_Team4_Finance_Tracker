@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="?attr/backgroundcolor"
+    card_view:cardBackgroundColor="?attr/whitecolor"
     card_view:cardCornerRadius="4dp">
 
     <!-- Main Content View -->
