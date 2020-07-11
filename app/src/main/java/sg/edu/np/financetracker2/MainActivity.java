@@ -2,6 +2,7 @@ package sg.edu.np.financetracker2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,9 +36,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     sharedPref sharedPref;
-    double balanceAmount;
     final String TAG = "FinanceTracker";
-    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,170 +52,59 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button buttonSpend = (Button) findViewById(R.id.buttonSpend);
-        final Button buttonReceive = (Button) findViewById(R.id.buttonReceive);
-        final Button seeAllTransactionButton = (Button)findViewById(R.id.seeAllTransactionButton);
-
-        buttonSpend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent spendPage = new Intent(MainActivity.this, SpendActivity.class);
-                startActivity(spendPage);
-                finish();
-            }
-        });
-
-        buttonReceive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent receivePage = new Intent(MainActivity.this, ReceiveActivity.class);
-                startActivity(receivePage);
-                finish();
-            }
-        });
         //Bottom Navigation View
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment selectedFragment = null;
+
                 switch(menuItem.getItemId()){
+                    case R.id.home:
+                        Log.v(TAG, "Going to Home...");
+                        selectedFragment = new HomeFragment();
+                        break;
                     case R.id.settings:
-                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                        startActivity(intent);
+                        Log.v(TAG, "Going to Settings...");
+                        selectedFragment = new SettingFragment();
                         break;
                     case R.id.report:
-                        Intent intent2 = new Intent(MainActivity.this, ReportActivity.class);
-                        startActivity(intent2);
+                        Log.v(TAG, "Going to Report...");
+                        selectedFragment = new ReportFragment();
                         break;
                     case R.id.history:
-                        Intent intent4 = new Intent(MainActivity.this, TransactionHistoryActivity.class);
-                        startActivity(intent4);
+                        Log.v(TAG, "Going to History...");
+                        selectedFragment = new TransactionHistoryFragment();
                         break;
                     case R.id.goals:
-                        Intent intent5 = new Intent(MainActivity.this, GoalsActivity.class);
-                        startActivity(intent5);
+                        Log.v(TAG, "Going to Goals...");
+                        selectedFragment = new GoalsFragment();
                         break;
                 }
 
-                return false;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        selectedFragment).commit();
+
+                return true;
             }
         });
 
-        //seeAllTransactionButton
-        seeAllTransactionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent historyPage = new Intent(MainActivity.this, TransactionHistoryActivity.class);
-                startActivity(historyPage);
-                finish();
-            }
-        });
-
-        loadData();
-        //RecycleViewHistory
-        final RecyclerView recyclerViewCustom = findViewById(R.id.rvHistory);
-        recyclerViewCustom.setHasFixedSize(true);
-        final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        recyclerViewCustom.setLayoutManager(mLayoutManager);
-        recyclerViewCustom.setAdapter(mAdaptor);
-        recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
-
-        //receiving intent from receiveActivity
-        Intent receivingEnd = getIntent();
-        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
-        if(obj != null){
-            historyList.add(0,obj);
-        }
-        saveData();
-
-
-
-
-
-        Log.v(TAG, "test");
-
-        if (balanceExists() == false){
-            try {
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("balance.txt", Context.MODE_PRIVATE));
-                outputStreamWriter.write("0.00");
-                outputStreamWriter.close();
-                Log.v(TAG, "Initiated Balance!");
-            }
-            catch (IOException e) {
-                Log.e(TAG, "Exception! File write failed: " + e.toString());
-            }
-        }
-    }
-
-    protected void onStart(){
-        super.onStart();
-        final TextView balance = (TextView) findViewById(R.id.balanceAmount);
-        //Intent getBal = getIntent();
-        //balanceAmount = getBal.getDoubleExtra("balanceAmount", 0);
-        balanceAmount = getBalance();
-
-        Log.v(TAG, "Balance: " + balanceAmount);
-        Log.v(TAG, "Displaying balance...");
-        Double displayAmount = Math.abs(balanceAmount);
-        String displayString;
-
-        if (balanceAmount >= 0){
-            DecimalFormat df = new DecimalFormat("0.00");
-            displayString = "$" + df.format(displayAmount);
-        }
-        else{
-            DecimalFormat df = new DecimalFormat("0.00");
-            displayString = "-$" + df.format(displayAmount);
-        }
-        balance.setText(displayString);
-    }
-    private void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(historyList);
-        editor.putString("task list", json);
-        editor.apply();
-    }
-    private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("task list",null);
-        Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
-        historyList =  gson.fromJson(json,type);
-
-        if(historyList == null){
-            historyList = new ArrayList<>();
-        }
-    }
-
-
-    // read balance.txt file and get current balance
-    private Double getBalance(){
-        String data;
-        StringBuffer stringBuffer = new StringBuffer();
-
-        try{
-            InputStream inputStream = getApplicationContext().openFileInput("balance.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            while((data = reader.readLine()) != null){
-                stringBuffer.append(data);
+        String defaultFragment = sharedPreferences.getString("default page",null);
+        if (savedInstanceState == null) {
+            if (defaultFragment == "settings") {
+                Log.v(TAG, "Loading Settings...");
+                bottomNavigationView.getMenu().findItem(R.id.settings).setChecked(true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingFragment()).commit();
             }
-            inputStream.close();
-        }catch(Exception e){
-            e.printStackTrace();
+            else {
+                Log.v(TAG, "Loading Home...");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            }
+            editor.putString("default page", "home");
+            editor.apply();
         }
-        return Double.parseDouble(stringBuffer.toString());
-    }
-
-    public boolean balanceExists() {
-        File file = getApplicationContext().getFileStreamPath("balance.txt");
-        if(file == null || !file.exists()) {
-            return false;
-        }
-        return true;
     }
 
     protected void onStop(){
