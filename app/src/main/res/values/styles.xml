@@ -23,7 +23,7 @@
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundcolor">#303030</item>
-        <item name="cardBackgroundColor">#303030</item>
+        <item name="cardBackgroundColor">#EC303030</item>
         <item name="whitecolor">#303030</item>
         <item name="textcolor">#ffffff</item>
         <item name="tintcolor">#ffffff</item>

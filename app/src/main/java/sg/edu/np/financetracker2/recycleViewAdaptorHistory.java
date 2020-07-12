@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewHolderHistory> implements Filterable {
+public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewAdaptorHistory.recycleViewHolderHistory> implements Filterable {
     ArrayList<transactionHistoryItem> data;
     ArrayList<transactionHistoryItem> dataListFull;
+    private onHistoryListener mOnHistoryListener;
     final String TAG = "Adaptor";
     public ImageView mImageView;
     public TextView mLine1;
@@ -25,16 +26,17 @@ public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewH
 
 
 
-    public recycleViewAdaptorHistory(ArrayList<transactionHistoryItem> input) {
+    public recycleViewAdaptorHistory(ArrayList<transactionHistoryItem> input, onHistoryListener onHistoryListener) {
         data = input;
         dataListFull = new ArrayList<>(input);
+        this.mOnHistoryListener = onHistoryListener;
     }
 
 
     @Override
     public recycleViewHolderHistory onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_history, parent, false);
-        return new recycleViewHolderHistory(item);
+        return new recycleViewHolderHistory(item,mOnHistoryListener);
     }
 
     @Override
@@ -50,6 +52,34 @@ public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewH
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    //viewholder
+    public class recycleViewHolderHistory extends RecyclerView.ViewHolder implements View.OnClickListener{
+        ImageView mImageView;
+        TextView mLine1,mLine2,mDate,mPrice;
+        onHistoryListener onHistoryListener;
+        public recycleViewHolderHistory(View itemView, onHistoryListener onHistoryListener){
+            super(itemView);
+            mImageView = itemView.findViewById(R.id.ImageView);
+            mLine1 = itemView.findViewById(R.id.line1);
+            mLine2 = itemView.findViewById(R.id.line2);
+            mDate = itemView.findViewById(R.id.tvDate);
+            mPrice = itemView.findViewById(R.id.tvPrice);
+
+            this.onHistoryListener = onHistoryListener;
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            onHistoryListener.onHistoryClick(getAdapterPosition());
+        }
+    }
+    //transction detail activity onclick
+    public interface onHistoryListener{
+        void onHistoryClick(int position);
     }
 
     @Override

@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.onHistoryListener{
     double balanceAmount;
     final String TAG = "FinanceTracker";
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
         //RecycleViewHistory
         final RecyclerView recyclerViewCustom = homeView.findViewById(R.id.rvHistory);
         recyclerViewCustom.setHasFixedSize(true);
-        final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList);
+        final recycleViewAdaptorHistory mAdaptor = new recycleViewAdaptorHistory(historyList,this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
@@ -181,6 +181,15 @@ public class HomeFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onHistoryClick(int position) {
+        //transactionhistory object
+        transactionHistoryItem obj = historyList.get(position);
+        Intent intent = new Intent(getActivity(),TransactionDetailActivity.class);
+        intent.putExtra("historyObj",obj);
+        startActivity(intent);
     }
 }
 // ((MainActivity)getActivity())

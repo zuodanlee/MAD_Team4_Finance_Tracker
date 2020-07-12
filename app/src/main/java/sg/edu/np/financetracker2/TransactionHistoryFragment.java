@@ -1,5 +1,6 @@
 package sg.edu.np.financetracker2;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class TransactionHistoryFragment extends Fragment {
+public class TransactionHistoryFragment extends Fragment implements recycleViewAdaptorHistory.onHistoryListener{
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     private recycleViewAdaptorHistory mAdaptor;
 
@@ -35,7 +37,7 @@ public class TransactionHistoryFragment extends Fragment {
         //RecycleViewHistory
         final RecyclerView recyclerViewCustom = historyView.findViewById(R.id.rvAllHistory);
         recyclerViewCustom.setHasFixedSize(true);
-        mAdaptor = new recycleViewAdaptorHistory(historyList);
+        mAdaptor = new recycleViewAdaptorHistory(historyList,this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
         recyclerViewCustom.setAdapter(mAdaptor);
@@ -44,6 +46,7 @@ public class TransactionHistoryFragment extends Fragment {
         setHasOptionsMenu(true);
 
         return historyView;
+        
     }
 
     @Override
@@ -84,5 +87,14 @@ public class TransactionHistoryFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onHistoryClick(int position) {
+        //transactionhistory object
+        transactionHistoryItem obj = historyList.get(position);
+        Intent intent = new Intent(getActivity(),TransactionDetailActivity.class);
+        intent.putExtra("historyObj",obj);
+        startActivity(intent);
     }
 }
