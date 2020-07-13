@@ -50,6 +50,7 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
         final TextView categoryTextView = findViewById(R.id.categoryTextView);
         final EditText noteEditText = findViewById(R.id.notesEditText);
 
+
         //getdate
         Calendar calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());

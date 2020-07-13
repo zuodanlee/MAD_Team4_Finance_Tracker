@@ -94,7 +94,7 @@ public class TransactionHistoryFragment extends Fragment implements recycleViewA
         //transactionhistory object
         transactionHistoryItem obj = historyList.get(position);
         Intent intent = new Intent(getActivity(),TransactionDetailActivity.class);
-        intent.putExtra("historyObj",obj);
+        intent.putExtra("position",position);
         startActivity(intent);
     }
 }

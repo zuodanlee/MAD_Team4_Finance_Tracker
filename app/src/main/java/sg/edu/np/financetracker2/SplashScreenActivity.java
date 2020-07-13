@@ -21,4 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         },1500);
     }
+    protected void onStop(){
+        super.onStop();
+    }
 }

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_moneysmartappi_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransactionDetailActivity"></activity>
+        <activity android:name=".EditTransactionActivity"></activity>
+        <activity android:name=".TransactionDetailActivity" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

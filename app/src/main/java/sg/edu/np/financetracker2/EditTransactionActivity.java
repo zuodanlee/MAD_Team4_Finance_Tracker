@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,24 +17,28 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SpendActivity extends AppCompatActivity implements recycleViewHolderCategory.OnCategoryListener{
+public class EditTransactionActivity extends AppCompatActivity implements recycleViewHolderCategory.OnCategoryListener{
     sharedPref sharedPref;
     final String TAG = "FinanceTracker";
     int image;
     ArrayList<String> categoryList = new ArrayList<>();
+    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     private String notes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         //NightMode
         sharedPref = new sharedPref(this);
         if(sharedPref.loadNightMode()==true){
@@ -42,47 +47,92 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
         else {
             setTheme(R.style.AppTheme);
         };
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spend);
+        setContentView(R.layout.activity_edit_transaction);
 
-        Button confirmButton = findViewById(R.id.spendBSave);
-        final EditText etSpendAmt = findViewById(R.id.deductBalanceAmt);
-        final TextView categoryTextView = findViewById(R.id.spendTvCategory);
-        final EditText noteEditText = findViewById(R.id.spendEtNotes);
+        Button confirmButton = findViewById(R.id.editSave);
+        final EditText etEditAmt = findViewById(R.id.editBalanceAmt);
+        final TextView categoryTextView = findViewById(R.id.editTvCategory);
+        final EditText noteEditText = findViewById(R.id.editEtNotes);
 
-        //getdate
-        Calendar calendar = Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
-        final String[] newDate = currentDate.split(",");
+        loadData();
+        //editpage
+        //retrieve transaction history object from history list
+        //get position from home fragment/transaction history fragment
+        final int position = getIntent().getIntExtra("position",-1);
+        final transactionHistoryItem obj = historyList.get(position);
+
+
+        //set price,notes,category
+        String price = obj.getmPrice().replace("SGD","");
+        if(obj.getmPrice().contains("+")) {
+            price = price.replace("+","");
+        }
+        else{
+            price = price.replace("-","");
+        }
+        etEditAmt.setText(price);
+        noteEditText.setText(obj.getmLine2());
+        categoryTextView.setText(obj.getmLine1());
+        //obj.getmDate()
+        
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 double balanceAmount;
-                Double spentAmt;
+                Double editAmt;
+                Double diffAmt;
                 try {
                     balanceAmount = getBalance();
-                    spentAmt = Double.parseDouble(etSpendAmt.getText().toString());
+                    editAmt = Double.parseDouble(etEditAmt.getText().toString());
 
                     //Validation
                     //if categoryTextView is empty it will be uncategorized
                     if (categoryTextView.length() == 0) {
                         //Notification to
                         Toast.makeText(getApplicationContext(), "Please choose a category", Toast.LENGTH_SHORT).show();
-                    } else if (spentAmt == 0 | spentAmt < 0) {
+                    } else if (editAmt == 0 | editAmt < 0) {
                         //Notification to enter a price
                         Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
                     } else {
                         //RecordPrice
-                        String price = "-" + spentAmt + " SGD";
-                        Log.v(TAG, price);
+                        String price1;
+                        if (obj.getmPrice().contains("+")){
+                            price1 = "+" + editAmt + " SGD";
+                        }
+                        else{
+                            price1 = "-" + editAmt + " SGD";
+                        }
+                        Log.v(TAG, price1);
 
-                        //UpdateBalance to main page
-                        Log.v(TAG, "Balance: " + balanceAmount);
-                        balanceAmount -= spentAmt;
+                        //get old price from old transaction object
+                        String oldPrice = obj.getmPrice().replace("SGD","");
+                        if(obj.getmPrice().contains("+")) {
+                            oldPrice = oldPrice.replace("+","");
+                            //find diff in amount
+                            diffAmt = Math.abs(Double.parseDouble(oldPrice)-editAmt);
+                            if(Double.parseDouble(oldPrice)>editAmt){
+                                balanceAmount -= diffAmt;
+                            }
+                            else{
+                                balanceAmount += diffAmt;
+                            }
+                        }
+                        else{
+                            oldPrice = oldPrice.replace("-","");
+                            //find diff in amount
+                            diffAmt = Math.abs(Double.parseDouble(oldPrice)-editAmt);
+                            if(Double.parseDouble(oldPrice)>editAmt){
+                                balanceAmount += diffAmt;
+                            }
+                            else{
+                                balanceAmount -= diffAmt;
+                            }
+                        }
+
+                        //UpdateBalance to Transaction Detail page
                         updateBalance(balanceAmount);
-                        Intent deductBal = new Intent(SpendActivity.this, MainActivity.class);
 
                         //getcategory
                         String category = categoryTextView.getText().toString();
@@ -93,9 +143,13 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
                             notes = category;
                         }
                         //create transactionhistoryobject
-                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, newDate[0], price);
-                        deductBal.putExtra("MyClass", hObject);
-                        startActivity(deductBal);
+                        transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, obj.getmDate(), price1);
+                        historyList.set(position,hObject);
+                        saveData();
+
+                        Intent editBal = new Intent(EditTransactionActivity.this, TransactionDetailActivity.class);
+                        editBal.putExtra("position", position);
+                        startActivity(editBal);
                         finish();
                     }
                 } catch (Exception e) {
@@ -106,20 +160,21 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
 
         });
 
-        //Back to Main Activity button
-        ImageButton backButton = (ImageButton) findViewById(R.id.spendBBack);
+        //Back to TransactionDetail Activity button
+        ImageButton backButton = (ImageButton) findViewById(R.id.editBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG, "Back to Main Activity");
-                Intent backToMain = new Intent(SpendActivity.this, MainActivity.class);
+                Log.v(TAG, "Back to TransactionDetails Activity");
+                Intent backToMain = new Intent(EditTransactionActivity.this, TransactionDetailActivity.class);
+                backToMain.putExtra("position",position);
                 startActivity(backToMain);
                 finish();
             }
         });
 
         //RecycerViewCategory
-        final RecyclerView recyclerViewCustom = findViewById(R.id.spendRvCategory);
+        final RecyclerView recyclerViewCustom = findViewById(R.id.editRvCategory);
         final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewCustom.setLayoutManager(mLayoutManager);
@@ -128,6 +183,26 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
         InitData();
     }
 
+    private void saveData(){
+            SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(historyList);
+            editor.putString("task list", json);
+            editor.apply();
+    }
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<transactionHistoryItem>>() {
+        }.getType();
+        historyList = gson.fromJson(json, type);
+
+        if (historyList == null) {
+            historyList = new ArrayList<>();
+        }
+    }
     public void InitData() {
         String uncategorized = "Uncategorized";
         String food = "Food";
@@ -200,12 +275,11 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
     @Override
     public void onCategoryClick(int position) {
         String category = categoryList.get(position);
-        TextView tvCategory = findViewById(R.id.spendTvCategory);
+        TextView tvCategory = findViewById(R.id.editTvCategory);
         tvCategory.setText(category);
     }
 
     protected void onStop(){
         super.onStop();
-        finish();
     }
 }
