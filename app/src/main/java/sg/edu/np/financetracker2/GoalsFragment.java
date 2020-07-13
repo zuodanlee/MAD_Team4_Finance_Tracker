@@ -28,7 +28,6 @@ public class GoalsFragment extends Fragment {
     ArrayList<Goal> goals = new ArrayList<>();
     private Button addGoal;
     private EditText newGoal;
-    SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -87,7 +86,7 @@ public class GoalsFragment extends Fragment {
     }
     //Save list of goals to shared prefs
     private void saveGoals(){
-        sharedPreferences = getActivity().getSharedPreferences("shared preferences",getActivity().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(goals);

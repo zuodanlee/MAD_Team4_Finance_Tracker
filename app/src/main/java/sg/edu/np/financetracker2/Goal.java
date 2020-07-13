@@ -4,7 +4,7 @@ import android.widget.Button;
 
 public class Goal {
     private String goal;
-    private Button deleteGoal;
+    private transient Button deleteGoal;
 
     public String getGoal() {
         return goal;
