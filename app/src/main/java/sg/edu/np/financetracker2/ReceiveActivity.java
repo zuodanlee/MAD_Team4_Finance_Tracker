@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +17,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +36,7 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
     int image;
     private String notes;
     ArrayList<String> categoryList = new ArrayList<>();
+    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //NightMode
@@ -94,7 +100,11 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
                         }
                         //create transactionhistoryobject
                         transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, newDate[0], price);
-                        addBal.putExtra("MyClass", hObject);
+                        //adding object into history list
+                        loadData();
+                        historyList.add(0,hObject);
+                        saveData();
+
                         startActivity(addBal);
                         finish();
                     }
@@ -112,7 +122,7 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
             public void onClick(View v) {
                 Log.v(TAG, "Back to Main Activity");
                 Intent backToMain = new Intent(ReceiveActivity.this, MainActivity.class);
-                startActivity(backToMain);
+                startActivity(backToMain);;
                 finish();
             }
         });
@@ -127,6 +137,25 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
         InitData();
 
 
+    }
+    private void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(historyList);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list",null);
+        Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
+        historyList =  gson.fromJson(json,type);
+
+        if(historyList == null){
+            historyList = new ArrayList<>();
+        }
     }
 
     public void InitData() {
@@ -207,5 +236,11 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
     protected void onStop(){
         super.onStop();
         finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 }

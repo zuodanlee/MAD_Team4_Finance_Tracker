@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
             public void onClick(View v) {
                 Intent spendPage = new Intent(getActivity(), SpendActivity.class);
                 startActivity(spendPage);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -60,6 +61,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
             public void onClick(View v) {
                 Intent receivePage = new Intent(getActivity(), ReceiveActivity.class);
                 startActivity(receivePage);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -72,7 +74,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransactionHistoryFragment()).commit();
             }
         });
-
+        Log.d(TAG, "onCreateView: "+historyList.size());
         //RecycleViewHistory
         final RecyclerView recyclerViewCustom = homeView.findViewById(R.id.rvHistory);
         recyclerViewCustom.setHasFixedSize(true);
@@ -88,15 +90,8 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //loading history list data
         loadData();
-        //receiving intent from receiveActivity
-        Intent receivingEnd = getActivity().getIntent();
-        transactionHistoryItem obj =  (transactionHistoryItem)receivingEnd.getSerializableExtra("MyClass");
-        if(obj != null){
-            historyList.add(0,obj);
-        }
-        saveData();
 
         if (balanceExists() == false){
             try {
@@ -198,14 +193,15 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
         return true;
     }
 
+    //on transaction item click in recyclerview
     @Override
     public void onHistoryClick(int position) {
-        //transactionhistory object
-        transactionHistoryItem obj = historyList.get(position);
         Intent intent = new Intent(getActivity(),TransactionDetailActivity.class);
-        //item position in recyclerview
+        //sent item position in recyclerview to transaction detail activity to retrieve object from history list
         intent.putExtra("position",position);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
     }
+
 
 }
