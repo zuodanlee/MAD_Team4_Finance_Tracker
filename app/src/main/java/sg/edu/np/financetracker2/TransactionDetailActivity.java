@@ -95,5 +95,6 @@ public class TransactionDetailActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
+        finish();
     }
 }

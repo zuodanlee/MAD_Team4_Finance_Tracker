@@ -1,5 +1,6 @@
 package sg.edu.np.financetracker2;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -132,6 +133,22 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
             displayString = "-$" + df.format(displayAmount);
         }
         balance.setText(displayString);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
+        boolean allowRefresh = sharedPreferences.getBoolean("allowRefresh", false);
+
+        if (allowRefresh)
+        {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("allowRefresh", false);
+            editor.apply();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        }
     }
 
     private void saveData(){

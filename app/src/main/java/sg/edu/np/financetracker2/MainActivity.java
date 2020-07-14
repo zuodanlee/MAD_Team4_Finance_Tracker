@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        selectedFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
                 return true;
             }
@@ -105,9 +104,5 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("default page", "home");
             editor.apply();
         }
-    }
-
-    protected void onStop(){
-        super.onStop();
     }
 }

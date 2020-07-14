@@ -147,6 +147,11 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
                         historyList.set(position,hObject);
                         saveData();
 
+                        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("allowRefresh", true);
+                        editor.apply();
+
                         Intent editBal = new Intent(EditTransactionActivity.this, TransactionDetailActivity.class);
                         editBal.putExtra("position", position);
                         startActivity(editBal);
@@ -173,7 +178,7 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
             }
         });
 
-        //RecycerViewCategory
+        //RecyclerViewCategory
         final RecyclerView recyclerViewCustom = findViewById(R.id.editRvCategory);
         final recycleViewAdaptorCategory mAdaptor = new recycleViewAdaptorCategory(categoryList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
