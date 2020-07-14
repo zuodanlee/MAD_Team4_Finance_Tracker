@@ -23,5 +23,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
+        finish();
     }
 }

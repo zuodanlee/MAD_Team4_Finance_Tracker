@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +53,10 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
 
+        //Set actionbar back button
+        getSupportActionBar().setTitle("Edit Transaction");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Button confirmButton = findViewById(R.id.editSave);
         final EditText etEditAmt = findViewById(R.id.editBalanceAmt);
         final TextView categoryTextView = findViewById(R.id.editTvCategory);
@@ -57,13 +64,13 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
 
         loadData();
         //editpage
-        //retrieve transaction history object from history list
         //get position from home fragment/transaction history fragment
         final int position = getIntent().getIntExtra("position",-1);
+        //retrieve transaction history object from history list
         final transactionHistoryItem obj = historyList.get(position);
 
 
-        //set price,notes,category
+        //formatting price for display in activity page
         String price = obj.getmPrice().replace("SGD","");
         if(obj.getmPrice().contains("+")) {
             price = price.replace("+","");
@@ -71,12 +78,12 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
         else{
             price = price.replace("-","");
         }
+        //Display price, notes and category in activity page
         etEditAmt.setText(price);
         noteEditText.setText(obj.getmLine2());
         categoryTextView.setText(obj.getmLine1());
-        //obj.getmDate()
-        
 
+        //onclick update transaction details
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +91,9 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
                 Double editAmt;
                 Double diffAmt;
                 try {
+                    //retrieve total balance
                     balanceAmount = getBalance();
+                    //retrieve price user entered
                     editAmt = Double.parseDouble(etEditAmt.getText().toString());
 
                     //Validation
@@ -97,6 +106,7 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
                         Toast.makeText(getApplicationContext(), "Please enter price", Toast.LENGTH_SHORT).show();
                     } else {
                         //RecordPrice
+                        //format price
                         String price1;
                         if (obj.getmPrice().contains("+")){
                             price1 = "+" + editAmt + " SGD";
@@ -104,13 +114,12 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
                         else{
                             price1 = "-" + editAmt + " SGD";
                         }
-                        Log.v(TAG, price1);
 
-                        //get old price from old transaction object
+                        //get old price from old transaction object that is selected
                         String oldPrice = obj.getmPrice().replace("SGD","");
                         if(obj.getmPrice().contains("+")) {
                             oldPrice = oldPrice.replace("+","");
-                            //find diff in amount
+                            //find diff in amount between old price and new price
                             diffAmt = Math.abs(Double.parseDouble(oldPrice)-editAmt);
                             if(Double.parseDouble(oldPrice)>editAmt){
                                 balanceAmount -= diffAmt;
@@ -134,15 +143,19 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
                         //UpdateBalance to Transaction Detail page
                         updateBalance(balanceAmount);
 
-                        //getcategory
+                        //retrieve category that user input
                         String category = categoryTextView.getText().toString();
+                        //set image category
                         InitImage(category);
-                        //getnote
+                        //retrieve not that user input
                         notes = noteEditText.getText().toString();
+                        //if note is empty, note is default to show category
                         if(notes.length() == 0){
                             notes = category;
                         }
-                        //create transactionhistoryobject
+                        //create new transaction history object
+                        //replace old object to new object in history list
+                        //list updated
                         transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, obj.getmDate(), price1);
                         historyList.set(position,hObject);
                         saveData();
@@ -282,4 +295,6 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
     protected void onStop(){
         super.onStop();
     }
+
+
 }

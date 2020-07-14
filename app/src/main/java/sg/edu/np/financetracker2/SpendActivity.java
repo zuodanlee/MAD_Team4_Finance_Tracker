@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +17,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +35,7 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
     final String TAG = "FinanceTracker";
     int image;
     ArrayList<String> categoryList = new ArrayList<>();
+    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
     private String notes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +100,11 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
                         }
                         //create transactionhistoryobject
                         transactionHistoryItem hObject = new transactionHistoryItem(image, category, notes, newDate[0], price);
-                        deductBal.putExtra("MyClass", hObject);
+                        //adding object into history list
+                        loadData();
+                        historyList.add(0,hObject);
+                        saveData();
+
                         startActivity(deductBal);
                         finish();
                     }
@@ -127,6 +137,7 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
         recyclerViewCustom.setItemAnimator(new DefaultItemAnimator());
         InitData();
     }
+
 
     public void InitData() {
         String uncategorized = "Uncategorized";
@@ -194,6 +205,25 @@ public class SpendActivity extends AppCompatActivity implements recycleViewHolde
         }
         catch (IOException e) {
             Log.e(TAG, "Exception! File write failed: " + e.toString());
+        }
+    }
+    private void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(historyList);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list",null);
+        Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
+        historyList =  gson.fromJson(json,type);
+
+        if(historyList == null){
+            historyList = new ArrayList<>();
         }
     }
 

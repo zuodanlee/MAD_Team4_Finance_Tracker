@@ -77,7 +77,7 @@ public class recycleViewAdaptorHistory extends RecyclerView.Adapter<recycleViewA
             onHistoryListener.onHistoryClick(getAdapterPosition());
         }
     }
-    //transction detail activity onclick
+    //transaction detail activity onitemclick in recyclerview
     public interface onHistoryListener{
         void onHistoryClick(int position);
     }

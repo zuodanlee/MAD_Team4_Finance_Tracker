@@ -89,12 +89,14 @@ public class TransactionHistoryFragment extends Fragment implements recycleViewA
         });
     }
 
+    //on transaction item click in recyclerview
     @Override
     public void onHistoryClick(int position) {
-        //transactionhistory object
+        //sent item position in recyclerview to transaction detail activity
         transactionHistoryItem obj = historyList.get(position);
         Intent intent = new Intent(getActivity(),TransactionDetailActivity.class);
         intent.putExtra("position",position);
         startActivity(intent);
     }
+
 }
