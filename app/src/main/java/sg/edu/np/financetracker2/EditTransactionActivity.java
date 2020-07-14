@@ -294,7 +294,13 @@ public class EditTransactionActivity extends AppCompatActivity implements recycl
 
     protected void onStop(){
         super.onStop();
+        finish();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
 
 }

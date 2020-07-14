@@ -95,6 +95,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(TransactionDetailActivity.this,EditTransactionActivity.class);
                 intent.putExtra("position",position);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -226,7 +227,20 @@ public class TransactionDetailActivity extends AppCompatActivity {
     protected void onStop(){
         super.onStop();
         finish();
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //onbackpressed return to main activity
+        Intent intent = new Intent(TransactionDetailActivity.this,MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 }

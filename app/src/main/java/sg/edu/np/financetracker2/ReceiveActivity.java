@@ -122,7 +122,7 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
             public void onClick(View v) {
                 Log.v(TAG, "Back to Main Activity");
                 Intent backToMain = new Intent(ReceiveActivity.this, MainActivity.class);
-                startActivity(backToMain);
+                startActivity(backToMain);;
                 finish();
             }
         });
@@ -236,5 +236,11 @@ public class ReceiveActivity extends AppCompatActivity implements recycleViewHol
     protected void onStop(){
         super.onStop();
         finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 }

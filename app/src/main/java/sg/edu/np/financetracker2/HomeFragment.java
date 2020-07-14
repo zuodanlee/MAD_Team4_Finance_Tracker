@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
             public void onClick(View v) {
                 Intent spendPage = new Intent(getActivity(), SpendActivity.class);
                 startActivity(spendPage);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -59,6 +60,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
             public void onClick(View v) {
                 Intent receivePage = new Intent(getActivity(), ReceiveActivity.class);
                 startActivity(receivePage);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -173,6 +175,7 @@ public class HomeFragment extends Fragment implements recycleViewAdaptorHistory.
         //sent item position in recyclerview to transaction detail activity to retrieve object from history list
         intent.putExtra("position",position);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
     }
 
 

@@ -75,6 +75,7 @@ public class SettingFragment extends Fragment {
                         updateBalance(balanceAmount);
                         Intent deductBal = new Intent(getActivity(), MainActivity.class);
                         startActivity(deductBal);
+                        getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                         getActivity().finish();
                         //Notification Data has been cleared
                         Toast.makeText(getActivity(), "Data has been cleared", Toast.LENGTH_SHORT).show();
