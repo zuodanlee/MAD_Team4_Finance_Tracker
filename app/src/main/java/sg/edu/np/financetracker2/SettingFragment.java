@@ -1,34 +1,62 @@
 package sg.edu.np.financetracker2;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingFragment extends Fragment {
     private Switch mySwitch;
     sharedPref sharedPref;
+    Dialog myDialog;
     final String TAG = "SettingActivity";
+    ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -93,7 +121,179 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        //Export data as csv
+        //pop up screen will appear
+        Button exportData = (Button)settingView.findViewById(R.id.exportButton);
+        exportData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Spinner spinner;
+                myDialog = new Dialog(getActivity());
+                myDialog.setContentView(R.layout.custompopup_export_setting);
+                spinner = myDialog.findViewById(R.id.spinner);
+
+                List<String> fileType = new ArrayList<>();
+                fileType.add(0,"CSV");
+                fileType.add(1,"Excel");
+
+                //style and populate the spinner
+                ArrayAdapter<String> dataAdapter;
+                dataAdapter = new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,fileType);
+                //dropdown layout style
+                dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                //attaching data adapter to spinner
+                spinner.setAdapter(dataAdapter);
+
+                Button cancelButton = myDialog.findViewById(R.id.cancelButton);
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myDialog.dismiss();
+                    }
+                });
+
+                Button okButton = myDialog.findViewById(R.id.okButton);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //get updated history list
+                        loadData();
+                        String fileType =  (String) spinner.getSelectedItem();
+                        if (fileType.equals("CSV")){
+                            //create and export csv
+                            createExportCsv();
+                        }
+                        else{
+                            //create and export excel sheet
+                            createExportExcel();
+                        }
+                    }
+                });
+                myDialog.show();
+            }
+        });
+
         return settingView;
+    }
+
+    private void createExportCsv(){
+
+        //generate data
+        StringBuilder data = new StringBuilder();
+        data.append("Date,Income/Expenses,Category,Note,Price");
+
+        for (int i = 0; i<historyList.size(); i++){
+            transactionHistoryItem obj = historyList.get(i);
+            String incomeExpense = null;
+            if(obj.getmPrice().contains("+")) {
+                incomeExpense = "Income";
+            }
+            else{
+                incomeExpense = "Expenses";
+            }
+            data.append("\n"+obj.getmDate()+","+incomeExpense+","+obj.getmLine1()+","+obj.getmLine2()+","+obj.getmPrice());
+        }
+        try {
+            //saving the file into device
+            FileOutputStream out =  getActivity().openFileOutput("MoneySmartData.csv",Context.MODE_PRIVATE);
+            out.write(data.toString().getBytes());
+            out.close();
+
+            //exporting
+            Context context = getActivity().getApplicationContext();
+            File fileLocation = new File(getActivity().getFilesDir(),"MoneySmartData.csv");
+            Uri path = FileProvider.getUriForFile(context,"sg.edu.np.financetracker2",fileLocation);
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.setType("text/csv");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT,"Data");
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.putExtra(Intent.EXTRA_STREAM,path);
+            startActivity(Intent.createChooser(fileIntent,"Exporting Data"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void createExportExcel(){
+        //creating and exporting excel sheet
+        Workbook wb=new HSSFWorkbook();
+        Cell cell=null;
+
+        //Now we are creating sheet
+        Sheet sheet=null;
+        sheet = wb.createSheet("MoneySmart");
+        //Now column and row
+
+        //first row
+        Row row =sheet.createRow(0);
+
+        cell=row.createCell(0);
+        cell.setCellValue("Date");
+        cell=row.createCell(1);
+        cell.setCellValue("Income/Expenses");
+        cell=row.createCell(2);
+        cell.setCellValue("Category");
+        cell=row.createCell(3);
+        cell.setCellValue("Note");
+        cell=row.createCell(4);
+        cell.setCellValue("Price");
+
+        for (int i = 0; i<historyList.size(); i++) {
+            transactionHistoryItem obj = historyList.get(i);
+            String incomeExpense = null;
+            if (obj.getmPrice().contains("+")) {
+                incomeExpense = "Income";
+            } else {
+                incomeExpense = "Expenses";
+            }
+            //creating row
+            row =sheet.createRow(i+1);
+
+            cell=row.createCell(0);
+            cell.setCellValue(obj.getmDate());
+            cell=row.createCell(1);
+            cell.setCellValue(incomeExpense);
+            cell=row.createCell(2);
+            cell.setCellValue(obj.getmLine1());
+            cell=row.createCell(3);
+            cell.setCellValue(obj.getmLine2());
+            cell=row.createCell(4);
+            cell.setCellValue(obj.getmPrice());
+        }
+
+
+        try {
+            //saving the file into device
+            FileOutputStream out = getActivity().openFileOutput("MoneySmartData.xls", Context.MODE_PRIVATE);
+            wb.write(out);
+            out.close();
+
+            //exporting
+            Context context = getActivity().getApplicationContext();
+            File fileLocation = new File(getActivity().getFilesDir(), "MoneySmartData.xls");
+            Uri path = FileProvider.getUriForFile(context, "sg.edu.np.financetracker2", fileLocation);
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.setType("text/xls");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data");
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
+            startActivity(Intent.createChooser(fileIntent, "Exporting Data"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadData(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list",null);
+        Type type = new TypeToken<ArrayList<transactionHistoryItem>>(){}.getType();
+        historyList =  gson.fromJson(json,type);
+
+        if(historyList == null){
+            historyList = new ArrayList<>();
+        }
     }
 
     public void restartApp(){

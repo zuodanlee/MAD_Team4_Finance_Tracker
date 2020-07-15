@@ -34,7 +34,8 @@
                 android:text="0.00"
                 android:textAlignment="center"
                 android:textColor="?attr/textcolor"
-                android:textSize="50dp" />
+                android:textSize="50dp"
+                android:inputType="numberDecimal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -54,7 +55,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Notes"
                 android:textColor="?attr/textcolor"
-                android:textColorHint="?attr/textcolor" />
+                android:textColorHint="?attr/textcolor"
+                android:imeOptions="actionDone"
+                android:inputType="text"/>
         </LinearLayout>
 
         <LinearLayout
