@@ -91,7 +91,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/catRecycleviewButton"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="60dp"
                 tools:listitem="@layout/recycler_view_item_category" />
         </LinearLayout>
 
