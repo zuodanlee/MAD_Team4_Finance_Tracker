@@ -6,79 +6,197 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TabHost
-        android:id="@+id/tabHost"
+    <RelativeLayout
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="60dp"
+            android:weightSum="1">
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/bIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_tab_style"
+                android:layout_weight="0.5"
+                android:text="Income" />
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <Button
+                android:id="@+id/bExpenses"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_tab_style"
+                android:layout_weight="0.5"
+                android:text="Expenses" />
 
-                <LinearLayout
-                    android:id="@+id/income"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/earning"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="44dp"
-                        android:text="Income"
-                        android:textSize="30dp"
-                        android:textColor="?attr/textcolor" />
-
-                    <com.anychart.AnyChartView
-                        android:id="@+id/any_chart_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:layout_editor_absoluteY="128dp">
-
-                    </com.anychart.AnyChartView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/expenses"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvExpenses"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="44dp"
-                        android:text="Expenses"
-                        android:textSize="30dp"
-                        android:textColor="?attr/textcolor" />
-
-                    <com.anychart.AnyChartView
-                        android:id="@+id/any_chart_view_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:layout_editor_absoluteY="128dp">
-
-                    </com.anychart.AnyChartView>
-
-                </LinearLayout>
-            </FrameLayout>
         </LinearLayout>
-    </TabHost>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:id="@+id/incomeTabIndicator"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:background="#f58f4c"
+                android:layout_weight="0.5"
+                android:layout_alignParentBottom="true"/>
+
+            <View
+                android:id="@+id/expensesTabIndicator"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:background="#f58f4c"
+                android:layout_weight="0.5"
+                android:layout_alignParentBottom="true"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonContainer">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvGraphHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:text="Total Income Over The Last 3 Months"
+                android:textAlignment="center"
+                android:textSize="24dp"
+                android:textColor="?attr/textcolor"
+                app:layout_constraintBottom_toTopOf="@+id/graphContainer"
+                app:layout_constraintEnd_toEndOf="@+id/graphContainer"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/graphContainer" />
+
+            <RelativeLayout
+                android:id="@+id/graphContainer"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="96dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:clipChildren="false">
+
+                <LinearLayout
+                    android:id="@+id/llOnGraphListenerContainer"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="295dp">
+
+                    <View
+                        android:id="@+id/vLeftGraph"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="32dp" />
+
+                    <View
+                        android:id="@+id/vMiddleGraph"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="35dp" />
+
+                    <View
+                        android:id="@+id/vRightGraph"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/graphBaseline"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="_________________________________________"
+                    android:textAlignment="center"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="?attr/textcolor" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/leftGraph"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="Jan"
+                android:textAlignment="center"
+                android:textColor="?attr/textcolor"
+                app:layout_constraintBottom_toBottomOf="@+id/middleGraph"
+                app:layout_constraintEnd_toStartOf="@+id/middleGraph"
+                app:layout_constraintTop_toBottomOf="@+id/graphContainer" />
+
+            <TextView
+                android:id="@+id/middleGraph"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="Feb"
+                android:textAlignment="center"
+                android:textColor="?attr/textcolor"
+                app:layout_constraintEnd_toEndOf="@+id/graphContainer"
+                app:layout_constraintStart_toStartOf="@+id/graphContainer"
+                app:layout_constraintTop_toBottomOf="@+id/graphContainer" />
+
+            <TextView
+                android:id="@+id/rightGraph"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="Mar"
+                android:textAlignment="center"
+                android:textColor="?attr/textcolor"
+                app:layout_constraintBottom_toBottomOf="@+id/middleGraph"
+                app:layout_constraintStart_toEndOf="@+id/middleGraph"
+                app:layout_constraintTop_toBottomOf="@+id/graphContainer" />
+
+            <LinearLayout
+                android:id="@+id/llPieChartContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="28dp"
+                app:layout_constraintEnd_toEndOf="@+id/graphContainer"
+                app:layout_constraintStart_toStartOf="@+id/graphContainer"
+                app:layout_constraintTop_toBottomOf="@+id/middleGraph">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginVertical="28dp" />
+
+                <ListView
+                    android:id="@+id/lvPieChartLegend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="20dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

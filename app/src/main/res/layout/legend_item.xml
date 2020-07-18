@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llItemColour"
+            android:orientation="horizontal"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="9dp"
+            android:textColor="?attr/textcolor"
+            android:textSize="17dp"
+            android:text="Food" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvCategoryHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="9dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="true"
+        android:textColor="?attr/textcolor"
+        android:textSize="17dp"
+        android:text="Category" />
+
+    <TextView
+        android:id="@+id/tvItemValue"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="9dp"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/textcolor"
+        android:textSize="17dp"
+        android:text="Total Value (SGD)" />
+
+    <TextView
+        android:id="@+id/tvItemPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="9dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/textcolor"
+        android:textSize="17dp"
+        android:text="20%" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

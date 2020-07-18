@@ -33,5 +33,46 @@ public class transactionHistoryItem implements Serializable {
         return mPrice;
     }
 
-
+    public int getMonth(){
+        String month = mDate.substring(0, 3);
+        if (month.equals("Jan")){
+            return 0;
+        }
+        else if (month.equals("Feb")){
+            return 1;
+        }
+        else if (month.equals("Mar")){
+            return 2;
+        }
+        else if (month.equals("Apr")){
+            return 3;
+        }
+        else if (month.equals("May")){
+            return 4;
+        }
+        else if (month.equals("Jun")){
+            return 5;
+        }
+        else if (month.equals("Jul")){
+            return 6;
+        }
+        else if (month.equals("Aug")){
+            return 7;
+        }
+        else if (month.equals("Sep")){
+            return 8;
+        }
+        else if (month.equals("Oct")){
+            return 9;
+        }
+        else if (month.equals("Nov")){
+            return 10;
+        }
+        else if (month.equals("Dec")){
+            return 11;
+        }
+        else{
+            return -1;
+        }
+    }
 }
