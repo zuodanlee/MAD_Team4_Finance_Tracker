@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:text="0.00"
                 android:textAlignment="center"
                 android:textColor="?attr/textcolor"
@@ -61,7 +61,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Notes"
                 android:textColor="?attr/textcolor"
-                android:textColorHint="?attr/textcolor" />
+                android:textColorHint="?attr/textcolor"
+                android:imeOptions="actionDone"
+                android:inputType="text"/>
 
         </LinearLayout>
 
@@ -96,7 +98,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/editRvCategory"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="60dp"
                 tools:listitem="@layout/recycler_view_item_category" />
 
         </LinearLayout>
