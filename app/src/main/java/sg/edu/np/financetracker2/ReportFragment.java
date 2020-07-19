@@ -98,7 +98,7 @@ public class ReportFragment extends Fragment {
             llPieChartContainer.setBackgroundColor(0xFFE8EBE9);
         }
 
-        if (reportTab == "Expenses"){
+        if (reportTab.equals("Expenses")){
             incomeTabIndicator.setVisibility(View.INVISIBLE);
         }
         else{

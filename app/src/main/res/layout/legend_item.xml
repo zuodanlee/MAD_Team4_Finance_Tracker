@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="9dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_alignParentStart="true"
         android:textColor="?attr/textcolor"
         android:textSize="17dp"
@@ -40,14 +40,14 @@
 
     <TextView
         android:id="@+id/tvItemValue"
-        android:layout_width="136dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="9dp"
         android:layout_centerHorizontal="true"
         android:textAlignment="textEnd"
         android:textColor="?attr/textcolor"
         android:textSize="17dp"
-        android:text="Total Value (SGD)" />
+        android:text="$50" />
 
     <TextView
         android:id="@+id/tvItemPercent"

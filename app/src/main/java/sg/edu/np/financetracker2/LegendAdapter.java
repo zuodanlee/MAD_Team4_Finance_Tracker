@@ -47,8 +47,8 @@ public class LegendAdapter extends ArrayAdapter<LegendItem> {
 
         if (position == 0){
             tvName.setText("");
-            tvValue.setText("Total Value (SGD)");
-            tvPercent.setText("Percentage");
+            tvValue.setText("Amount (SGD)");
+            tvPercent.setText("%");
         }
         else if (position == legendItemList.size() - 1){
             tvCategoryHeader.setVisibility(View.GONE);
