@@ -14,8 +14,8 @@ import androidx.annotation.RequiresApi;
 
 public class NotificationHelper extends ContextWrapper {
 
-    public static final String CHANNEL_ID = "channel"; //sample name
-    public static final String CHANNEL_NAME = "Notify App"; //sample name
+    public static final String CHANNEL_ID = "Finance Tracker"; //sample name
+    public static final String CHANNEL_NAME = "Finance Tracker"; //sample name
 
     private NotificationManager manager;
 
@@ -32,7 +32,7 @@ public class NotificationHelper extends ContextWrapper {
                 CHANNEL_ID,
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setDescription("test");
+        channel.setDescription("Finance Tracker Notifications");
         channel.enableLights(false);
         channel.enableVibration(false);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);

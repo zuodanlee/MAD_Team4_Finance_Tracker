@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        calendar.set(Calendar.HOUR_OF_DAY,17);
-        calendar.set(Calendar.MINUTE,37);
+        calendar.set(Calendar.HOUR_OF_DAY,11);
+        calendar.set(Calendar.MINUTE,43);
 
         manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
