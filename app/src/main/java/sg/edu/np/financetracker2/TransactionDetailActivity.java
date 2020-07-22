@@ -49,7 +49,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_detail);
 
-        //Set actionBar back button
+        //Used to set back button actionbar
         getSupportActionBar().setTitle("Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -67,7 +67,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         TextView note = findViewById(R.id.textView9);
         FloatingActionButton editDetails = findViewById(R.id.editDetails);
 
-        //Formatting price to for displaying in activity page
+        //Formatting price for displaying in activity page
         String price = obj.getmPrice().replace("SGD","");
         String incomeExpense = null;
         if(obj.getmPrice().contains("+")) {
@@ -88,7 +88,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
 
 
         //when edit button is clicked
-        //position is sent to edit transaction activity to get obj from history list
+        //item position is sent to edit transaction activity to get obj from history list
         editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +151,6 @@ public class TransactionDetailActivity extends AppCompatActivity {
                             price = price.replace("+","");
                             //removing item price from balance
                             balanceAmount = (balanceAmount-Double.parseDouble(price));
-
                         }
                         else{
                             price = price.replace("-","");
