@@ -56,7 +56,7 @@
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@raw/notes" />
+                app:srcCompat="@raw/write" />
 
             <EditText
                 android:id="@+id/goalText"
@@ -68,6 +68,26 @@
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="30" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@raw/deadline" />
+
+            <EditText
+                android:id="@+id/goalDeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor"
+                android:hint="Enter deadline" />
 
         </LinearLayout>
 
@@ -104,21 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 tools:listitem="@layout/recycler_view_item_category" />
-
-            <EditText
-                android:id="@+id/goalDeadline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="textPersonName"
-                android:focusable="false"
-                android:textColor="?attr/textcolor"
-                android:textColorHint="?attr/textcolor"
-                android:hint="Enter deadline" />
-
         </LinearLayout>
 
     </LinearLayout>

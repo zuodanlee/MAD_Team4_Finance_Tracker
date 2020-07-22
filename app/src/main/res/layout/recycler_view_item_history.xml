@@ -61,7 +61,6 @@
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="@+id/tvPrice"
             card_view:layout_constraintTop_toBottomOf="@+id/tvPrice"
-            card_view:layout_constraintVertical_bias="0.75"
             tools:visibility="visible" />
 
         <ImageView

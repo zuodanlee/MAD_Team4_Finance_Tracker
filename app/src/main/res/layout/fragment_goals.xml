@@ -5,57 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Total amount needed for Goals: "
             android:gravity="center"
             android:textColor="?attr/textcolor"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/goalTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:textSize="32sp"
+            android:layout_marginTop="5dp"
             android:textColor="?attr/textcolor"
-            android:text="TextView" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:text="TextView"
+            android:layout_below="@id/textView"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerGoal"
             android:layout_width="match_parent"
-            android:layout_height="466dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:textColor="?attr/textcolor"
-            tools:listitem="@layout/recycler_view_goals" />
+            tools:listitem="@layout/recycler_view_goals"
+            android:layout_below="@id/goalTotal"
+            android:layout_above="@+id/addGoal"/>
 
         <Button
             android:id="@+id/addGoal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Goal" />
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        </LinearLayout>
-
-    </LinearLayout>
+            android:text="Add Goal"
+            android:background="#EDF2f4"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
