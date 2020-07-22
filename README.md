@@ -13,8 +13,10 @@ transaction types, income and expenses, to keep track of your total <br>
 balance. Each transaction is tagged with a category to help you keep<br>
 track of how much money you're spending on Food, or Clothing for example.<br>
 
-You can also open the report page to view a pie chart of your income and<br>
-expenses for all the different categories.<br>
+You can also open the report page to view statistics for the last 3 months,<br>
+including a bar chart comparing total income/expenses between the 3 months<br>
+and a pie chart for income/expenses of the selected month, broken down by<br>
+category. (refer to <a href="#screenshots">screenshots</a> below)<br>
 
 The history page allows you to look through all your previous transactions.<br>
 You can filter through them by using the search function, which searches for<br>
@@ -27,18 +29,23 @@ for that Switch.<br>
 
 The settings page allows you to switch the app to dark mode and clear your<br>
 data, which will reset the balance to $0.00 and delete all previous<br>
-transactions.<br>
+transactions. You can also turn on daily notifications, which are meant to<br>
+remind you to update your finances regularly. Finally, You can also export<br>
+your data as a csv file on your phone or to your email.<br>
+![](screenshots/home.png)<br>
 
 ROLES AND CONTRIBUTIONS<br>
 Jordan: Home, Report, Expense, BottomNavBar<br>
-Derek: Home, History, Report, Settings, Income<br>
+Derek: Home, History, Settings, Income<br>
 Jonavan: Goals, Slides, BottomNavBar<br>
-Aaron: Report, BottomNavBar<br>
+Aaron: Report, BottomNavBar, Settings<br>
 
-SCREENSHOTS<br>
-![](screenshots/screenshot_home.jpeg)<br>
-![](screenshots/screenshot_history.jpeg)<br>
-![](screenshots/screenshot_reportIncome.jpeg)<br>
-![](screenshots/screenshot_reportExpense.jpeg)<br>
-![](screenshots/screenshot_goals.jpeg)<br>
-![](screenshots/screenshot_settings.jpeg)<br>
+<span id="screenshots">SCREENSHOTS</span><br>
+![](screenshots/home.png)<br>
+![](screenshots/expense.png)<br>
+![](screenshots/history.png)<br>
+![](screenshots/report_bar.png)<br>
+![](screenshots/report_pie.png)<br>
+![](screenshots/report_pie_dark.png)<br>
+![](screenshots/goals.png)<br>
+![](screenshots/settings.png)<br>
