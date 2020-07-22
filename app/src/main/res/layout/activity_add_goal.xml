@@ -50,13 +50,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@raw/notes" />
+                app:srcCompat="@raw/write" />
 
             <EditText
                 android:id="@+id/goalText"
@@ -73,16 +72,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@raw/deadline" />
 
             <EditText
                 android:id="@+id/goalDeadline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 android:ems="10"
                 android:focusable="false"
@@ -90,6 +91,12 @@
                 android:inputType="textPersonName"
                 android:textColor="?attr/textcolor"
                 android:textColorHint="?attr/textcolor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,12 +113,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:hint="Category"
-                    android:paddingLeft="3dp"
-                    android:paddingTop="5dp"
                     android:textColor="?attr/textcolor"
                     android:textColorHint="?attr/textcolor"
                     android:textSize="17dp" />
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -119,10 +123,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 tools:listitem="@layout/recycler_view_item_category" />
-
         </LinearLayout>
-
     </LinearLayout>
+
 
     <Button
         android:id="@+id/addButton"
