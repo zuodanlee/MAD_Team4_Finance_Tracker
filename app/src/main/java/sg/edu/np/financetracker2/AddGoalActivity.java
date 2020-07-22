@@ -112,7 +112,7 @@ public class AddGoalActivity extends AppCompatActivity implements recycleViewHol
                         Toast.makeText(getApplicationContext(), "Please select a deadline", Toast.LENGTH_SHORT).show();
                     }  else {
                             //Record goal amount
-                            String amount = goalAmt + " SGD";
+                            String amount = goalAmt.toString();
                             Log.v(TAG, amount);
                             //Update goal total
                             Log.v(TAG, "Goal Total: " + goalTotal);

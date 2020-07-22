@@ -1,15 +1,24 @@
 package sg.edu.np.financetracker2;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -28,9 +37,9 @@ public class recyclerGoalAdapter extends RecyclerView.Adapter<recyclerGoalHolder
         return new recyclerGoalHolder(item);
     }
     public void onBindViewHolder(final recyclerGoalHolder holder, final int position){
-        Goal goal = goals.get(position);
+        final Goal goal = goals.get(position);
         holder.txt.setText(goal.getGoal());
-        holder.amt.setText(goal.getGoalAmount());
+        holder.amt.setText(goal.getGoalAmount() + " SGD");
         holder.cat.setImageResource(goal.getmImageResource());
         holder.deadline.setText("By: " + goal.getDeadline());
         //Delete goal
@@ -49,6 +58,16 @@ public class recyclerGoalAdapter extends RecyclerView.Adapter<recyclerGoalHolder
                         goals.remove(position);
                         saveGoals(); //Save list of goals to shared prefs
                         notifyDataSetChanged(); //Update activity
+                        //update total amount
+                        double goalTotal = getGoalTotal();
+                        goalTotal -= Double.parseDouble(goal.getGoalAmount());
+                        updateGoalTotal(goalTotal);
+                        TextView totalAmt = (TextView) ((Activity)context).findViewById(R.id.goalTotal);
+                        Double displayAmount = Math.abs(goalTotal);
+                        String displayString;
+                        DecimalFormat df = new DecimalFormat("0.00");
+                        displayString = "$" + df.format(displayAmount);
+                        totalAmt.setText(displayString);
                     }
                 });
                 //If no
@@ -74,5 +93,39 @@ public class recyclerGoalAdapter extends RecyclerView.Adapter<recyclerGoalHolder
         String json = gson.toJson(goals);
         editor.putString("Goal List", json);
         editor.apply();
+    }
+
+    //Get goal total
+    private Double getGoalTotal(){
+        String data = "";
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try{
+            InputStream inputStream = context.getApplicationContext().openFileInput("goalTotal.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            while((data = reader.readLine()) != null){
+                stringBuffer.append(data);
+            }
+            inputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Double.parseDouble(stringBuffer.toString());
+    }
+
+    //Update goal total
+    private void updateGoalTotal(Double newBal){
+        String newData = newBal.toString();
+        writeToFile(newData, context.getApplicationContext());
+    }
+
+    private void writeToFile(String data, Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("goalTotal.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+        }
     }
 }
