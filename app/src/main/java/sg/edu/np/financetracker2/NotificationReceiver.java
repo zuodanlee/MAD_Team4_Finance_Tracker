@@ -50,7 +50,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_moneysmartappi)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
