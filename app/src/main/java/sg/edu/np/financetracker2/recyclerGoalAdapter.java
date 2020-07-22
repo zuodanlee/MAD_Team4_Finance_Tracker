@@ -5,13 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,9 +21,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class recyclerGoalAdapter extends RecyclerView.Adapter<recyclerGoalHolder> {
     SharedPreferences sharedPreferences;

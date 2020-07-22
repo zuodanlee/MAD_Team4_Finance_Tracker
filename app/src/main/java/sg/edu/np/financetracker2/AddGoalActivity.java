@@ -1,39 +1,35 @@
 package sg.edu.np.financetracker2;
 
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.fragment.app.FragmentManager;
-        import androidx.recyclerview.widget.DefaultItemAnimator;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
-        import androidx.fragment.app.Fragment;
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.text.InputType;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.DatePicker;
-        import android.app.DatePickerDialog;
-        import android.widget.EditText;
-        import android.widget.ImageButton;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.google.gson.Gson;
-        import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-        import java.io.BufferedReader;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.InputStreamReader;
-        import java.io.OutputStreamWriter;
-        import java.lang.reflect.Type;
-        import java.text.DateFormat;
-        import java.util.ArrayList;
-        import java.util.Calendar;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddGoalActivity extends AppCompatActivity implements recycleViewHolderCategory.OnCategoryListener{
     sharedPref sharedPref;
