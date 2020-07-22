@@ -1,6 +1,8 @@
 package sg.edu.np.financetracker2;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,10 +51,12 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.nio.file.spi.FileTypeDetector;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SettingFragment extends Fragment {
     private Switch mySwitch;
+    private Switch notificationSwitch;
     sharedPref sharedPref;
     Dialog myDialog;
     final String TAG = "SettingActivity";
@@ -78,6 +82,16 @@ public class SettingFragment extends Fragment {
                 else{
                     sharedPref.setNightModeState(false);
                     restartApp();
+                }
+            }
+        });
+
+        notificationSwitch = (Switch)settingView.findViewById(R.id.notificationSwitch);
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    registerAlarm();
                 }
             }
         });
@@ -178,6 +192,20 @@ public class SettingFragment extends Fragment {
         });
 
         return settingView;
+    }
+
+    private void registerAlarm() {
+        AlarmManager manager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        calendar.set(Calendar.HOUR_OF_DAY,8);
+        calendar.set(Calendar.MINUTE,0);
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 
     private void createExportCsv(){

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        registerAlarm();
+
 
         //Bottom Navigation View
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -90,18 +90,17 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
         }
     }
+    //private void registerAlarm() {
+    //    AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    //    Intent intent = new Intent(MainActivity.this, NotificationReceiver.class);
+    //    PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
 
-    private void registerAlarm() {
-        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(MainActivity.this, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+    //    Calendar calendar = Calendar.getInstance();
+    //    calendar.setTimeInMillis(System.currentTimeMillis());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+    //   calendar.set(Calendar.HOUR_OF_DAY,8);
+    //    calendar.set(Calendar.MINUTE,0);
 
-        calendar.set(Calendar.HOUR_OF_DAY,11);
-        calendar.set(Calendar.MINUTE,43);
-
-        manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-    }
+    //    manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+    //}
 }
