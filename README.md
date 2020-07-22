@@ -32,7 +32,7 @@ data, which will reset the balance to $0.00 and delete all previous<br>
 transactions. You can also turn on daily notifications, which are meant to<br>
 remind you to update your finances regularly. Finally, You can also export<br>
 your data as a csv file on your phone or to your email.<br>
-![](screenshots/home.png)<br>
+![](screenshots/exported_data.png)<br>
 
 ROLES AND CONTRIBUTIONS<br>
 Jordan: Home, Report, Expense, BottomNavBar<br>
