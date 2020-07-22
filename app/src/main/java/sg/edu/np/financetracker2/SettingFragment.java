@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,13 +87,86 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        notificationSwitch = (Switch)settingView.findViewById(R.id.notificationSwitch);
-        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        notificationSwitch=(Switch)settingView.findViewById(R.id.notificationSwitch);
+        final int[] time = new int[]{0, 0};
+        if(sharedPref.loadNotification()){
+            notificationSwitch.setChecked(true);
+        }
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    registerAlarm();
+                    registerAlarm(time[0], time[1]);
+                    sharedPref.setNotificationState(true);
+                    restartApp();
                 }
+                else{
+                    sharedPref.setNotificationState(false);
+                    restartApp();
+                }
+            }
+        });
+
+        //set time for daily notification
+        //pop up screen will appear
+        Button setTime = (Button)settingView.findViewById(R.id.setTime);
+        setTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Spinner hourSpinner;
+                final Spinner minuteSpinner;
+                myDialog = new Dialog(getActivity());
+                myDialog.setContentView(R.layout.custompopup_notification_timing);
+                hourSpinner = myDialog.findViewById(R.id.hourSpinner);
+                minuteSpinner = myDialog.findViewById(R.id.minuteSpinner);
+
+                List<String> hour = new ArrayList<>();
+                for (int hour_index = 0; hour_index < 24; hour_index++){
+                    hour.add(hour_index, Integer.toString(hour_index));
+                }
+
+                //style and populate the spinner
+                ArrayAdapter<String> dataAdapter1;
+                dataAdapter1 = new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,hour);
+                //dropdown layout style
+                dataAdapter1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                //attaching data adapter to spinner
+                hourSpinner.setAdapter(dataAdapter1);
+
+
+                List<String> minute = new ArrayList<>();
+                for (int minute_index = 0; minute_index < 60; minute_index++){
+                    minute.add(minute_index, Integer.toString(minute_index));
+                }
+
+                //style and populate the spinner
+                ArrayAdapter<String> dataAdapter2;
+                dataAdapter2 = new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,minute);
+                //dropdown layout style
+                dataAdapter2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                //attaching data adapter to spinner
+                minuteSpinner.setAdapter(dataAdapter2);
+
+                Button cancelButton = myDialog.findViewById(R.id.cancelButton);
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myDialog.dismiss();
+                    }
+                });
+
+                Button okButton = myDialog.findViewById(R.id.okButton);
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int hour =  (Integer) hourSpinner.getSelectedItem();
+                        int minute = (Integer) minuteSpinner.getSelectedItem();
+
+                        time[0] = hour;
+                        time[1] = minute;
+                    }
+                });
+                myDialog.show();
             }
         });
 
@@ -194,7 +268,7 @@ public class SettingFragment extends Fragment {
         return settingView;
     }
 
-    private void registerAlarm() {
+    private void registerAlarm(int hour, int minute) {
         AlarmManager manager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,0);
@@ -202,8 +276,8 @@ public class SettingFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        calendar.set(Calendar.HOUR_OF_DAY,8);
-        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
 
         manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
@@ -407,8 +481,7 @@ public class SettingFragment extends Fragment {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("goalTotal.txt", Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
         }
     }
 }

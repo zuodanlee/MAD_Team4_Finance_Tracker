@@ -19,4 +19,13 @@ public class sharedPref {
         Boolean state =mySharedPref.getBoolean("NightMode",false);
         return state;
     }
+    public void setNotificationState(Boolean state){
+        SharedPreferences.Editor editor = mySharedPref.edit();
+        editor.putBoolean("Notification",state);
+        editor.commit();
+    }
+    public boolean loadNotification(){
+        Boolean state = mySharedPref.getBoolean("Notification",false);
+        return state;
+    }
 }
