@@ -304,6 +304,11 @@ public class ReportFragment extends Fragment {
         double[] values = {leftValue, middleValue, rightValue};
         Arrays.sort(values);
         double largestValue = values[2];
+
+        if (largestValue == 0){
+            return;
+        }
+
         Log.v(TAG, "Calculating coordinates...");
         int leftHeight = (int) ((1 - (leftValue / largestValue)) * 475);
         int middleHeight = (int) ((1 - (middleValue / largestValue)) * 475);

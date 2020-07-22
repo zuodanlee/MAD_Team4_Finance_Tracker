@@ -37,15 +37,24 @@
             android:textColor="?attr/textcolor"
             tools:listitem="@layout/recycler_view_goals"
             android:layout_below="@id/goalTotal"
-            android:layout_above="@+id/addGoal"/>
+            android:layout_above="@+id/addGoalContainer"/>
 
-        <Button
-            android:id="@+id/addGoal"
+        <LinearLayout
+            android:id="@+id/addGoalContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Goal"
             android:background="#EDF2f4"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/addGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Add Goal"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

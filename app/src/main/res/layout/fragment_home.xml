@@ -65,14 +65,24 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/recycler_view_item_history"
             android:layout_below="@id/transactionTextView"
-            android:layout_above="@id/seeAllTransactionButton"/>
-        <Button
-            android:id="@+id/seeAllTransactionButton"
+            android:layout_above="@id/seeTransactionsContainer"/>
+
+        <LinearLayout
+            android:id="@+id/seeTransactionsContainer"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:background="#EDF2f4"
-            android:text="See all transactions"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true">
+
+                <Button
+                    android:id="@+id/seeAllTransactionButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="See all transactions"/>
+
+        </LinearLayout>
+        
     </RelativeLayout>
 
 
