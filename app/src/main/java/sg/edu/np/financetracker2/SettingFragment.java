@@ -52,15 +52,18 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.nio.file.spi.FileTypeDetector;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 public class SettingFragment extends Fragment {
     private Switch mySwitch;
     private Switch notificationSwitch;
+    Spinner hourSpinner;
+    Spinner minuteSpinner;
     sharedPref sharedPref;
     Dialog myDialog;
-    final String TAG = "SettingActivity";
+    final String TAG = "FinanceTracker";
     ArrayList<transactionHistoryItem> historyList = new ArrayList<>();
 
     @Nullable
@@ -98,12 +101,11 @@ public class SettingFragment extends Fragment {
                 if(isChecked){
                     registerAlarm(time[0], time[1]);
                     sharedPref.setNotificationState(true);
-                    restartApp();
                 }
                 else{
                     sharedPref.setNotificationState(false);
-                    restartApp();
                 }
+                restartApp();
             }
         });
 
@@ -113,8 +115,6 @@ public class SettingFragment extends Fragment {
         setTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Spinner hourSpinner;
-                final Spinner minuteSpinner;
                 myDialog = new Dialog(getActivity());
                 myDialog.setContentView(R.layout.custompopup_notification_timing);
                 hourSpinner = myDialog.findViewById(R.id.hourSpinner);
@@ -159,10 +159,12 @@ public class SettingFragment extends Fragment {
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int hour =  (Integer) hourSpinner.getSelectedItem();
-                        int minute = (Integer) minuteSpinner.getSelectedItem();
+                        int hour = hourSpinner.getSelectedItemPosition();
+                        int minute = minuteSpinner.getSelectedItemPosition();
 
                         sharedPref.setNotificationTime(hour,minute);
+                        Log.v(TAG, "Time: " + Arrays.toString(sharedPref.loadNotificationTime()));
+                        myDialog.dismiss();
                     }
                 });
                 myDialog.show();
