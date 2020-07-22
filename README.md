@@ -41,11 +41,11 @@ Jonavan: Goals, Slides, BottomNavBar<br>
 Aaron: Report, BottomNavBar, Settings<br>
 
 <span id="screenshots">SCREENSHOTS</span><br>
-![](screenshots/home.png) {width: 350px;}<br>
-![](screenshots/expense.png) {width: 350px;}<br>
-![](screenshots/history.png) {width: 350px;}<br>
-![](screenshots/report_bar.png) {width: 350px;}<br>
-![](screenshots/report_pie.png) {width: 350px;}<br>
-![](screenshots/report_pie_dark.png) {width: 350px;}<br>
-![](screenshots/goals.png) {width: 350px;}<br>
-![](screenshots/settings.png) {width: 350px;}<br>
+<img src="screenshots/home.png" width="350"><br>
+<img src="screenshots/expense.png" width="350"><br>
+<img src="screenshots/history.png" width="350"><br>
+<img src="screenshots/report_bar.png" width="350"><br>
+<img src="screenshots/report_pie.png" width="350"><br>
+<img src="screenshots/report_pie_dark.png" width="350"><br>
+<img src="screenshots/goals.png" width="350"><br>
+<img src="screenshots/settings.png" width="350"><br>
