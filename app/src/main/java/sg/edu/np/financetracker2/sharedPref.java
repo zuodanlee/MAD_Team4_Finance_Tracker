@@ -28,4 +28,16 @@ public class sharedPref {
         Boolean state = mySharedPref.getBoolean("Notification",false);
         return state;
     }
+    public void setNotificationTime(int hour, int minute){
+        SharedPreferences.Editor editor = mySharedPref.edit();
+        editor.putInt("Hour",hour);
+        editor.putInt("Minute",minute);
+        editor.commit();
+    }
+    public int[] loadNotificationTime(){
+        int hour = mySharedPref.getInt("Hour",0);
+        int minute = mySharedPref.getInt("Minute",0);
+        int[] time = {hour,minute};
+        return time;
+    }
 }

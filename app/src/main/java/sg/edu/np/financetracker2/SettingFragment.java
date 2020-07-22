@@ -88,7 +88,7 @@ public class SettingFragment extends Fragment {
         });
 
         notificationSwitch=(Switch)settingView.findViewById(R.id.notificationSwitch);
-        final int[] time = new int[]{0, 0};
+        final int[] time = sharedPref.loadNotificationTime();
         if(sharedPref.loadNotification()){
             notificationSwitch.setChecked(true);
         }
@@ -162,8 +162,7 @@ public class SettingFragment extends Fragment {
                         int hour =  (Integer) hourSpinner.getSelectedItem();
                         int minute = (Integer) minuteSpinner.getSelectedItem();
 
-                        time[0] = hour;
-                        time[1] = minute;
+                        sharedPref.setNotificationTime(hour,minute);
                     }
                 });
                 myDialog.show();
