@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_moneysmartappi_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditTransactionActivity" android:parentActivityName=".TransactionDetailActivity"/>
-        <activity android:name=".TransactionDetailActivity" android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".EditTransactionActivity"
+            android:parentActivityName=".TransactionDetailActivity" />
+        <activity
+            android:name=".TransactionDetailActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -27,6 +31,10 @@
         <activity
             android:name=".ReceiveActivity"
             android:label="Income"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AddGoalActivity"
+            android:label="Add New Goal"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -46,13 +54,12 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="sg.edu.np.financetracker2"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

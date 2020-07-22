@@ -29,7 +29,10 @@ public class recyclerGoalAdapter extends RecyclerView.Adapter<recyclerGoalHolder
     }
     public void onBindViewHolder(final recyclerGoalHolder holder, final int position){
         Goal goal = goals.get(position);
-        holder.txt.setText((position+1) + ". " + goal.getGoal());
+        holder.txt.setText(goal.getGoal());
+        holder.amt.setText(goal.getGoalAmount());
+        holder.cat.setImageResource(goal.getmImageResource());
+        holder.deadline.setText("By: " + goal.getDeadline());
         //Delete goal
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override

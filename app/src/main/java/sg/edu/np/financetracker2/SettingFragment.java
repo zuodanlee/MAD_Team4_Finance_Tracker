@@ -101,6 +101,10 @@ public class SettingFragment extends Fragment {
                         Log.v(TAG, "Balance: " + balanceAmount);
                         balanceAmount = 0;
                         updateBalance(balanceAmount);
+                        double goalTotal = getGoalTotal();
+                        Log.v(TAG, "Balance: " + goalTotal);
+                        goalTotal = 0;
+                        updateGoalTotal(goalTotal);
                         Intent deductBal = new Intent(getActivity(), MainActivity.class);
                         startActivity(deductBal);
                         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
@@ -345,6 +349,38 @@ public class SettingFragment extends Fragment {
         }
         catch (IOException e) {
             Log.e(TAG, "Exception! File write failed: " + e.toString());
+        }
+    }
+
+    private Double getGoalTotal(){
+        String data = "";
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try{
+            InputStream inputStream = getActivity().openFileInput("goalTotal.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            while((data = reader.readLine()) != null){
+                stringBuffer.append(data);
+            }
+            inputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Double.parseDouble(stringBuffer.toString());
+    }
+
+    private void updateGoalTotal(Double newBal){
+        String newData = newBal.toString();
+        writeToGoalFile(newData, getActivity());
+    }
+
+    private void writeToGoalFile(String data, Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("goalTotal.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
         }
     }
 }

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor"
+    tools:context=".AddGoalActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundcolor"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="$"
+                android:textColor="?attr/textcolor"
+                android:textSize="50sp" />
+
+            <EditText
+                android:id="@+id/goalAmt"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:text="0.00"
+                android:maxLength="10"
+                android:textAlignment="center"
+                android:textColor="?attr/textcolor"
+                android:textSize="50sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@raw/notes" />
+
+            <EditText
+                android:id="@+id/goalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write goal (Max 30 characters)"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="30" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@raw/category" />
+
+                <TextView
+                    android:id="@+id/categoryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:hint="Category"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="5dp"
+                    android:textColor="?attr/textcolor"
+                    android:textColorHint="?attr/textcolor"
+                    android:textSize="17dp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/goalCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                tools:listitem="@layout/recycler_view_item_category" />
+
+            <EditText
+                android:id="@+id/goalDeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:inputType="textPersonName"
+                android:focusable="false"
+                android:textColor="?attr/textcolor"
+                android:textColorHint="?attr/textcolor"
+                android:hint="Enter deadline" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/transactionhistoryitemborder"/>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/addButton"
+        app:layout_constraintEnd_toStartOf="@+id/addButton"
+        app:layout_constraintTop_toTopOf="@+id/addButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="@drawable/transactionhistoryitemborder"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

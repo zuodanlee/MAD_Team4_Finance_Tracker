@@ -9,35 +9,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerGoal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:textColor="?attr/textcolor"
-        tools:listitem="@layout/recycler_view_goals" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/goalText"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Write new goal (Max 60 letters)"
             android:layout_weight="1"
-            android:inputType="textPersonName"
+            android:text="Total amount needed for Goals: "
+            android:gravity="center"
             android:textColor="?attr/textcolor"
-            android:textColorHint="?attr/textcolor" />
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/goalTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:textColor="?attr/textcolor"
+            android:text="TextView" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerGoal"
+            android:layout_width="match_parent"
+            android:layout_height="466dp"
+            android:layout_weight="1"
+            android:textColor="?attr/textcolor"
+            tools:listitem="@layout/recycler_view_goals" />
 
         <Button
             android:id="@+id/addGoal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add" />
-    </LinearLayout>
+            android:text="Add Goal" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

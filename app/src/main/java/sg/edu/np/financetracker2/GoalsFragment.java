@@ -1,14 +1,17 @@
 package sg.edu.np.financetracker2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,51 +24,45 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GoalsFragment extends Fragment {
+    final String TAG = "FinanceTracker";
     ArrayList<Goal> goals = new ArrayList<>();
     private Button addGoal;
-    private EditText newGoal;
+    private recyclerGoalAdapter gAdapter;
+    private RecyclerView recyclerGoal;
+    private View goalsView;
+    double goalTotal;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View goalsView = inflater.inflate(R.layout.fragment_goals, container, false);
+        goalsView = inflater.inflate(R.layout.fragment_goals, container, false);
 
         //Goal recyclerview adapter and layout manager
-        final RecyclerView recyclerGoal = goalsView.findViewById(R.id.recyclerGoal);
-        final recyclerGoalAdapter gAdapter = new recyclerGoalAdapter(goals,getActivity());
+        recyclerGoal = goalsView.findViewById(R.id.recyclerGoal);
+        gAdapter = new recyclerGoalAdapter(goals,getActivity());
         LinearLayoutManager gLayoutManager = new LinearLayoutManager(getActivity());
         recyclerGoal.setLayoutManager(gLayoutManager);
         recyclerGoal.setItemAnimator(new DefaultItemAnimator());
         recyclerGoal.setAdapter(gAdapter);
 
         addGoal = (Button) goalsView.findViewById(R.id.addGoal);
-        newGoal = (EditText) goalsView.findViewById(R.id.goalText);
-        //Adding new goal
         addGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = newGoal.getText().toString();
-                //If no input
-                if(input.length()==0){
-                    Toast.makeText(getActivity(),"Please enter a goal",Toast.LENGTH_SHORT).show();
-                    return;
-                    //If input exceeds 60 characters
-                }else if (input.length()>60){
-                    Toast.makeText(getActivity(),"Goal cannot exceed 60 letters",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Goal goal = new Goal();
-                goal.setGoal(input);
-                goals.add(goal);
-                saveGoals(); //Save list of goals to shared prefs
-                //Update activity
-                gAdapter.notifyDataSetChanged();
-                showNewEntry(recyclerGoal,goals);
-                newGoal.setText(""); //Reset input field
+                Intent intent = new Intent(getActivity(), AddGoalActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
 
@@ -76,23 +73,45 @@ public class GoalsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadGoals(); //Load list of goals from shared prefs
+        if (goalTotalExists() == false){
+            try {
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().getApplicationContext().openFileOutput("goalTotal.txt", Context.MODE_PRIVATE));
+                outputStreamWriter.write("0.00");
+                outputStreamWriter.close();
+                Log.v(TAG, "Created new goalTotal.txt");
+            }
+            catch (IOException e) {
+                Log.e(TAG, "Exception! File write failed: " + e.toString());
+            }
+        }
     }
 
-    private void showNewEntry(RecyclerView rv, ArrayList data){
-        rv.scrollToPosition(data.size() - 1);
+    //Display goal total
+    @Override
+    public void onStart() {
+        super.onStart();
+        final TextView totalAmt = (TextView) getActivity().findViewById(R.id.goalTotal);
+        goalTotal = getGoalTotal();
+        Log.v(TAG, "Goal total: " + goalTotal);
+        Log.v(TAG, "Displaying goal total...");
 
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rv.getWindowToken(), 0);
+        Double displayAmount = Math.abs(goalTotal);
+        String displayString;
+        DecimalFormat df = new DecimalFormat("0.00");
+        displayString = "$" + df.format(displayAmount);
+        totalAmt.setText(displayString);
     }
-    //Save list of goals to shared prefs
-    private void saveGoals(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(goals);
-        editor.putString("Goal List", json);
-        editor.apply();
+
+    //Update view after adding new goal
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadGoals();
+        recyclerGoal = goalsView.findViewById(R.id.recyclerGoal);
+        gAdapter = new recyclerGoalAdapter(goals,getActivity());
+        recyclerGoal.setAdapter(gAdapter);
     }
+
     //Load list of goals from shared prefs
     private void loadGoals(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared preferences", getActivity().MODE_PRIVATE);
@@ -104,5 +123,32 @@ public class GoalsFragment extends Fragment {
         if(goals == null){
             goals = new ArrayList<>();
         }
+    }
+
+    //Get goal total
+    private Double getGoalTotal(){
+        String data;
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try{
+            InputStream inputStream = getActivity().openFileInput("goalTotal.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            while((data = reader.readLine()) != null){
+                stringBuffer.append(data);
+            }
+            inputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Double.parseDouble(stringBuffer.toString());
+    }
+
+    //Check if goalTotal.txt exists
+    public boolean goalTotalExists() {
+        File file = getActivity().getFileStreamPath("goalTotal.txt");
+        if(file == null || !file.exists()) {
+            return false;
+        }
+        return true;
     }
 }
