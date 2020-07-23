@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -51,11 +51,11 @@ public class TransactionHistoryFragment extends Fragment implements recycleViewA
         // load transaction history
         loadData();
 
-        RelativeLayout rlNoTransactionMessage = historyView.findViewById(R.id.rlNoTransactionMessage);
+        LinearLayout llNoTransactionMessage = historyView.findViewById(R.id.llNoTransactionMessage);
 
         // remove no transactions message if there are transactions
         if (!historyList.isEmpty()){
-            rlNoTransactionMessage.setVisibility(View.GONE);
+            llNoTransactionMessage.setVisibility(View.GONE);
         }
 
         //RecycleViewHistory

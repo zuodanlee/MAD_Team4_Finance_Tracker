@@ -16,8 +16,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <RelativeLayout
-        android:id="@+id/rlNoTransactionMessage"
+    <LinearLayout
+        android:id="@+id/llNoTransactionMessage"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,18 +29,18 @@
             android:fontFamily="sans-serif-medium"
             android:text="No transactions yet, go to Home page to add some!"
             android:textColor="#f9953c"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"
+            android:layout_gravity="center"
             android:textAlignment="center"
             android:textSize="24sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:contentDescription="unsure face"
             android:src="@drawable/unsure_face" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
