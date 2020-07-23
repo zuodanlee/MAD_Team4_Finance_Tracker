@@ -91,6 +91,7 @@ public class ReportFragment extends Fragment {
         final View incomeTabIndicator = (View) reportView.findViewById(R.id.incomeTabIndicator);
         final View expensesTabIndicator = (View) reportView.findViewById(R.id.expensesTabIndicator);
 
+        // load dark/light mode
         if(sharedPref.loadNightMode()){
             llPieChartContainer.setBackgroundColor(0xFF363636);
         }
@@ -98,6 +99,7 @@ public class ReportFragment extends Fragment {
             llPieChartContainer.setBackgroundColor(0xFFE8EBE9);
         }
 
+        // hide tab indicator for inactive tab
         if (reportTab.equals("Expenses")){
             incomeTabIndicator.setVisibility(View.INVISIBLE);
         }
@@ -105,6 +107,7 @@ public class ReportFragment extends Fragment {
             expensesTabIndicator.setVisibility(View.INVISIBLE);
         }
 
+        // set buttons' and graphs' on-click listeners
         bIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,36 +205,14 @@ public class ReportFragment extends Fragment {
             }
         });
 
-
+        // load transaction history
         loadData();
 
-
         // prepare values for bar chart
-        for (transactionHistoryItem item : historyList){
-            double amount = Double.parseDouble(item.getmPrice().substring(0, item.getmPrice().length() - 4));
-            if (amount > 0){
-                if (item.getMonth() == currentMonth-2){
-                    leftValueI += amount;
-                }
-                else if (item.getMonth() == currentMonth-1){
-                    middleValueI += amount;
-                }
-                else if (item.getMonth() == currentMonth){
-                    rightValueI += amount;
-                }
-            }
-            else{
-                if (item.getMonth() == currentMonth-2){
-                    leftValueE -= amount;
-                }
-                else if (item.getMonth() == currentMonth-1){
-                    middleValueE -= amount;
-                }
-                else if (item.getMonth() == currentMonth){
-                    rightValueE -= amount;
-                }
-            }
-        }
+        loadBarChartValues();
+
+        // prepare values for pie chart
+        loadPieChartValues();
 
         Log.v(TAG, "Drawing graphs...");
 
@@ -239,12 +220,10 @@ public class ReportFragment extends Fragment {
         TextView middleMonth = reportView.findViewById(R.id.middleGraph);
         TextView rightMonth = reportView.findViewById(R.id.rightGraph);
 
+        // set month names under graph
         leftMonth.setText(months[currentMonth-2]);
         middleMonth.setText(months[currentMonth-1]);
         rightMonth.setText(months[currentMonth]);
-
-        // prepare values for pie chart
-        loadPieChartValues();
 
         // set up bar and pie charts
         reportTab = sharedPreferences.getString("reportTab", "Income");
@@ -299,63 +278,37 @@ public class ReportFragment extends Fragment {
         }
     }
 
-    private void drawGraph(View view, double leftValue, double middleValue, double rightValue) {
-        Log.v(TAG, "LeftValue: " + leftValue + " | MiddleValue: " + middleValue + " | RightValue: " + rightValue);
-        double[] values = {leftValue, middleValue, rightValue};
-        Arrays.sort(values);
-        double largestValue = values[2];
-
-        if (largestValue == 0){
-            return;
+    public void loadBarChartValues(){
+        // filter by income/expense and last 3 months, and add item amounts to corresponding variables
+        for (transactionHistoryItem item : historyList){
+            double amount = Double.parseDouble(item.getmPrice().substring(0, item.getmPrice().length() - 4));
+            if (amount > 0){
+                if (item.getMonth() == currentMonth-2){
+                    leftValueI += amount;
+                }
+                else if (item.getMonth() == currentMonth-1){
+                    middleValueI += amount;
+                }
+                else if (item.getMonth() == currentMonth){
+                    rightValueI += amount;
+                }
+            }
+            else{
+                if (item.getMonth() == currentMonth-2){
+                    leftValueE -= amount;
+                }
+                else if (item.getMonth() == currentMonth-1){
+                    middleValueE -= amount;
+                }
+                else if (item.getMonth() == currentMonth){
+                    rightValueE -= amount;
+                }
+            }
         }
-
-        Log.v(TAG, "Calculating coordinates...");
-        int leftHeight = (int) ((1 - (leftValue / largestValue)) * 475);
-        int middleHeight = (int) ((1 - (middleValue / largestValue)) * 475);
-        int rightHeight = (int) ((1 - (rightValue / largestValue)) * 475);
-        Log.v(TAG, "LeftCoord: " + leftHeight + " | MiddleCoord: " + middleHeight + " | RightCoord: " + rightHeight);
-
-        int leftHeightSharp = leftHeight+20;
-        if (leftHeightSharp > 475) {
-            leftHeightSharp = 475;
-        }
-        int middleHeightSharp = middleHeight+20;
-        if (middleHeightSharp > 475) {
-            middleHeightSharp = 475;
-        }
-        int rightHeightSharp = rightHeight+20;
-        if (rightHeightSharp > 475) {
-            rightHeightSharp = 475;
-        }
-
-        paint.setColor(Color.parseColor("#d97531"));
-
-        Bitmap bg = Bitmap.createBitmap(480, 480, Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(bg);
-        RectF rectL = new RectF(60, leftHeightSharp, 140, 475);
-        RectF rectLR = new RectF(60, leftHeight, 140, 475);
-
-        RectF rectM = new RectF(200, middleHeightSharp, 280, 475);
-        RectF rectMR = new RectF(200, middleHeight, 280, 475);
-
-        RectF rectR = new RectF(340, rightHeightSharp, 420, 475);
-        RectF rectRR = new RectF(340, rightHeight, 420, 475);
-
-        canvas.drawRect(rectL, paint);
-        canvas.drawRect(rectM, paint);
-        canvas.drawRect(rectR, paint);
-        canvas.drawRoundRect(rectLR, rx, ry, paint);
-        canvas.drawRoundRect(rectMR, rx, ry, paint);
-        canvas.drawRoundRect(rectRR, rx, ry, paint);
-
-        // set background of relative layout to drawn graphs above
-        RelativeLayout graphContainer = (RelativeLayout) view.findViewById(R.id.graphContainer);
-        graphContainer.setBackground(new BitmapDrawable(bg));
     }
 
     public void loadPieChartValues(){
-        // initialise total amounts for each category under income
+        // initialise total amounts for each category under income for left month
         double foodIPrice = 0.00;
         double uncategorizedIPrice = 0.00;
         double clothingIPrice = 0.00;
@@ -363,7 +316,7 @@ public class ReportFragment extends Fragment {
         double transportIPrice = 0.00;
         double entertainmentIPrice = 0.00;
 
-        // initialise total amounts for each category under income
+        // initialise total amounts for each category under income for middle month
         double foodIPrice2 = 0.00;
         double uncategorizedIPrice2 = 0.00;
         double clothingIPrice2 = 0.00;
@@ -371,7 +324,7 @@ public class ReportFragment extends Fragment {
         double transportIPrice2 = 0.00;
         double entertainmentIPrice2 = 0.00;
 
-        // initialise total amounts for each category under income
+        // initialise total amounts for each category under income for right month
         double foodIPrice3 = 0.00;
         double uncategorizedIPrice3 = 0.00;
         double clothingIPrice3 = 0.00;
@@ -379,7 +332,7 @@ public class ReportFragment extends Fragment {
         double transportIPrice3 = 0.00;
         double entertainmentIPrice3 = 0.00;
 
-        // initialise total amounts for each category under expenses
+        // initialise total amounts for each category under expenses for left month
         double foodEPrice = 0.00;
         double uncategorizedEPrice = 0.00;
         double clothingEPrice = 0.00;
@@ -387,7 +340,7 @@ public class ReportFragment extends Fragment {
         double transportEPrice = 0.00;
         double entertainmentEPrice = 0.00;
 
-        // initialise total amounts for each category under expenses
+        // initialise total amounts for each category under expenses for middle month
         double foodEPrice2 = 0.00;
         double uncategorizedEPrice2 = 0.00;
         double clothingEPrice2 = 0.00;
@@ -395,7 +348,7 @@ public class ReportFragment extends Fragment {
         double transportEPrice2 = 0.00;
         double entertainmentEPrice2 = 0.00;
 
-        // initialise total amounts for each category under expenses
+        // initialise total amounts for each category under expenses for right month
         double foodEPrice3 = 0.00;
         double uncategorizedEPrice3 = 0.00;
         double clothingEPrice3 = 0.00;
@@ -403,6 +356,7 @@ public class ReportFragment extends Fragment {
         double transportEPrice3 = 0.00;
         double entertainmentEPrice3 = 0.00;
 
+        // filter by income/expense and category, and add item amounts to corresponding variables
         for (int i = 0; i<(historyList.size());i++){
             transactionHistoryItem pieObj = historyList.get(i);
             String mPrice= pieObj.getmPrice().replaceAll("SGD","");
@@ -547,6 +501,7 @@ public class ReportFragment extends Fragment {
             }
         }
 
+        // attach sorted values to corresponding global lists for reference when drawing graphs
         leftIncomeList.add(foodIPrice);
         leftIncomeList.add(uncategorizedIPrice);
         leftIncomeList.add(clothingIPrice);
@@ -587,11 +542,75 @@ public class ReportFragment extends Fragment {
         rightExpensesList.add(entertainmentEPrice3);
     }
 
+    // draw bar chart using Canvas
+    // note: sets the bar height of the month with greatest value as the maximum height of containing view
+    private void drawGraph(View view, double leftValue, double middleValue, double rightValue) {
+        Log.v(TAG, "LeftValue: " + leftValue + " | MiddleValue: " + middleValue + " | RightValue: " + rightValue);
+        double[] values = {leftValue, middleValue, rightValue};
+        Arrays.sort(values);
+        double largestValue = values[2];
+
+        if (largestValue == 0){
+            return;
+        }
+
+        Log.v(TAG, "Calculating coordinates...");
+        int leftHeight = (int) ((1 - (leftValue / largestValue)) * 475);
+        int middleHeight = (int) ((1 - (middleValue / largestValue)) * 475);
+        int rightHeight = (int) ((1 - (rightValue / largestValue)) * 475);
+        Log.v(TAG, "LeftCoord: " + leftHeight + " | MiddleCoord: " + middleHeight + " | RightCoord: " + rightHeight);
+
+        // prepare sharp edged-rectangles' height to be slightly lower than actual bar height
+        int leftHeightSharp = leftHeight+20;
+        if (leftHeightSharp > 475) {
+            leftHeightSharp = 475;
+        }
+        int middleHeightSharp = middleHeight+20;
+        if (middleHeightSharp > 475) {
+            middleHeightSharp = 475;
+        }
+        int rightHeightSharp = rightHeight+20;
+        if (rightHeightSharp > 475) {
+            rightHeightSharp = 475;
+        }
+
+        // set bar colour
+        paint.setColor(Color.parseColor("#d97531"));
+
+        // initialise bitmap to use for background of view
+        Bitmap bg = Bitmap.createBitmap(480, 480, Bitmap.Config.ARGB_8888);
+
+        // preparing top-rounded rectangles
+        Canvas canvas = new Canvas(bg); // bind bitmap to canvas
+        RectF rectL = new RectF(60, leftHeightSharp, 140, 475);
+        RectF rectLR = new RectF(60, leftHeight, 140, 475);
+
+        RectF rectM = new RectF(200, middleHeightSharp, 280, 475);
+        RectF rectMR = new RectF(200, middleHeight, 280, 475);
+
+        RectF rectR = new RectF(340, rightHeightSharp, 420, 475);
+        RectF rectRR = new RectF(340, rightHeight, 420, 475);
+
+        // drawing top-rounded rectangles
+        canvas.drawRect(rectL, paint);
+        canvas.drawRect(rectM, paint);
+        canvas.drawRect(rectR, paint);
+        canvas.drawRoundRect(rectLR, rx, ry, paint);
+        canvas.drawRoundRect(rectMR, rx, ry, paint);
+        canvas.drawRoundRect(rectRR, rx, ry, paint);
+
+        // set background of relative layout to drawn graphs above
+        RelativeLayout graphContainer = (RelativeLayout) view.findViewById(R.id.graphContainer);
+        graphContainer.setBackground(new BitmapDrawable(bg));
+    }
+
     public void setUpPieChart(View reportView, ArrayList<Double> itemList){
+        // set pie chart
         pieChart = reportView.findViewById(R.id.pieChart);
 
         ArrayList<PieEntry> dataEntries = new ArrayList<>();
 
+        // load pie entries
         for(int i = 0; i<categoryList.length; i++){
             if (itemList.get(i) > 0){
                 dataEntries.add(new PieEntry(itemList.get(i).floatValue(), categoryList[i]));
@@ -601,15 +620,18 @@ public class ReportFragment extends Fragment {
         PieDataSet pieDataSet = new PieDataSet(dataEntries, "");
         pieDataSet.setColors(colourClassArray);
         pieDataSet.setSliceSpace(3);
-        int no = 1;
-        for (int i : colourClassArray){
-            Log.v(TAG, "Colour #" + no + ": " + i);
-            no += 1;
-        }
+
+        // log for testing and retrieving int value of colours
+        //int no = 1;
+        //for (int i : colourClassArray){
+        //    Log.v(TAG, "Colour #" + no + ": " + i);
+        //    no += 1;
+        //}
 
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueTextSize(15);
 
+        // load different colours to suit dark/light mode
         if (sharedPref.loadNightMode()){
             pieData.setValueTextColor(Color.WHITE);
             pieChart.setEntryLabelColor(Color.WHITE);
@@ -625,6 +647,7 @@ public class ReportFragment extends Fragment {
             pieChart.getLegend().setTextColor(Color.BLACK);
         }
 
+        // config pie settings
         pieChart.setData(pieData);
         pieChart.setCenterText(reportTab + " In " + months[reportMonth] + " (SGD)");
         pieChart.setCenterTextSize(17);
@@ -645,8 +668,9 @@ public class ReportFragment extends Fragment {
         }
 
         List<LegendItem> legendItemList = new ArrayList<>();
-        legendItemList.add(new LegendItem("Header", 0, 0, new Paint()));
+        legendItemList.add(new LegendItem("Header", 0, 0, new Paint())); // load static header
 
+        // load legend items dynamically
         int i = 0;
         for (PieEntry pe : dataEntries){
             String itemName = pe.getLabel();
@@ -662,11 +686,14 @@ public class ReportFragment extends Fragment {
             i++;
         }
 
-        legendItemList.add(new LegendItem("Total", totalValue, 100, new Paint()));
+        legendItemList.add(new LegendItem("Total", totalValue, 100, new Paint())); // load last row of legend showing total
 
         LegendAdapter legendAdapter = new LegendAdapter(getContext(), R.layout.legend_item, legendItemList);
 
+        // set adapter and display legend
         lvPieChartLegend.setAdapter(legendAdapter);
+
+        // set height of legend dynamically
         setListViewHeightBasedOnChildren(lvPieChartLegend);
     }
 
