@@ -35,7 +35,7 @@ your data as a csv file on your phone or to your email.<br>
 ![](screenshots/exported_data.png)<br>
 
 ROLES AND CONTRIBUTIONS<br>
-Jordan: Home, Report, Expense, BottomNavBar<br>
+Jordan: Home, History, Report, Expense, BottomNavBar<br>
 Derek: Home, History, Settings, Income<br>
 Jonavan: Goals, Slides, BottomNavBar<br>
 Aaron: Report, BottomNavBar, Settings<br>

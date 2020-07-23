@@ -16,4 +16,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <RelativeLayout
+        android:id="@+id/rlNoTransactionMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvNoTransactionMessage"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="No transactions yet, go to Home page to add some!"
+            android:textColor="#f9953c"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="unsure face"
+            android:src="@drawable/unsure_face" />
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

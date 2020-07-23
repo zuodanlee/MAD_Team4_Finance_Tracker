@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,16 @@ public class TransactionHistoryFragment extends Fragment implements recycleViewA
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View historyView = inflater.inflate(R.layout.fragment_transaction_history, container, false);
 
+        // load transaction history
+        loadData();
+
+        RelativeLayout rlNoTransactionMessage = historyView.findViewById(R.id.rlNoTransactionMessage);
+
+        // remove no transactions message if there are transactions
+        if (!historyList.isEmpty()){
+            rlNoTransactionMessage.setVisibility(View.GONE);
+        }
+
         //RecycleViewHistory
         final RecyclerView recyclerViewCustom = historyView.findViewById(R.id.rvAllHistory);
         recyclerViewCustom.setHasFixedSize(true);
@@ -66,7 +77,6 @@ public class TransactionHistoryFragment extends Fragment implements recycleViewA
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadData();
     }
 
     private void loadData() {
