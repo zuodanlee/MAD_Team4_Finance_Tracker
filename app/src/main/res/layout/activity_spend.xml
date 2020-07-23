@@ -101,7 +101,7 @@
                     android:layout_height="35dp"
                     android:hint="Category"
                     android:paddingLeft="3dp"
-                    android:paddingTop="5dp"
+                    android:gravity="center_vertical"
                     android:textColor="?attr/textcolor"
                     android:textColorHint="?attr/textcolor"
                     android:textSize="17dp" />
