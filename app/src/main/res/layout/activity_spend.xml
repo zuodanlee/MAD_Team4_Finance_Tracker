@@ -45,12 +45,11 @@
 
             <EditText
                 android:id="@+id/deductBalanceAmt"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:ems="10"
                 android:inputType="numberDecimal"
                 android:text="0.00"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="?attr/textcolor"
                 android:textSize="50sp" />
