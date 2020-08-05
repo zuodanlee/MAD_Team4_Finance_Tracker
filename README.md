@@ -35,10 +35,17 @@ your data as a csv file on your phone or to your email.<br>
 ![](screenshots/exported_data.png)<br>
 
 ROLES AND CONTRIBUTIONS<br>
+Part 1<br>
 Jordan: Home, History, Report, Expense, BottomNavBar<br>
 Derek: Home, History, Settings, Income<br>
 Jonavan: Goals, Slides, BottomNavBar<br>
 Aaron: Report, BottomNavBar, Settings<br>
+
+Part 2<br>
+Jordan: Report, BottomNavBar<br>
+Derek: Home, History, Export Data<br>
+Jonavan: Goals<br>
+Aaron: Notifications<br>
 
 <span id="screenshots">SCREENSHOTS</span><br>
 <img src="screenshots/home.png" width="350"><br>
